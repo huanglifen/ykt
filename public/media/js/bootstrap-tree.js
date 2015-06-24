@@ -416,9 +416,10 @@
       if (!target.length) {
         target = $('<ul>').addClass('branch').append("<li>" + loading + "</li>").insertAfter($this)
       }
-      
+
       option.parent = $this
       option.href = (href !== "#") ? href : undefined
+
           
       $(target).tree(option)
       

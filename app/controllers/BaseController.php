@@ -1,11 +1,21 @@
 <?php namespace App\Controllers;
 
+use App\Module\MenuModule;
+use App\Module\PermissionModule;
+use App\Module\RoleModule;
+use App\Module\UserModule;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Validator;
 
 class BaseController extends Controller {
 
     public $errorInfo = array();
-    public $msgCode = array();
+    public $msgCode = array(
+        1001 => 'error_old_password'
+    );
     protected $langFile = 'common';
 
     const RESPONSE_OK = 0;
@@ -32,17 +42,19 @@ class BaseController extends Controller {
      *
      * @param $result
      */
-    protected function outputErrorIfFail($result)
-    {
+    protected function outputErrorIfFail($result) {
         if (! $result['status']) {
             $msg = $result['msg'];
-            foreach ($msg as $key => $value) {
-                if (array_key_exists($value, $this->msgCode)) {
-                    $msg[$key] = Lang::get($this->langFile . "." . $this->msgCode[$value]);
+            if(is_array($msg)) {
+                foreach ($msg as $key => $value) {
+                    if (array_key_exists($value, $this->msgCode)) {
+                        $msg[$key] = Lang::get($this->langFile . "." . $this->msgCode[$value]);
+                    }
                 }
+            }else{
+                $msg = Lang::get($this->langFile . "." . $msg);
             }
-
-            $result = $this->outputError(self::RESPONSE_FAIL, $msg);;
+            $result = $this->output(self::RESPONSE_FAIL, $msg);;
             echo $result;
             exit;
         }
@@ -57,6 +69,18 @@ class BaseController extends Controller {
             $result = $this->output(self::RESPONSE_CHECK_FAIL, $this->errorInfo);
             echo $result;
             exit;
+        }
+    }
+
+    /**
+     * 用户未登录
+     */
+    protected function outputUserNotLogin()
+    {
+        $login = $this->isLogin();
+        if(! $login) {
+            $result = $this->output(self::RESPONSE_USER_NOT_LOGIN, '用户未登录');
+            echo $result;
         }
     }
 
@@ -117,6 +141,12 @@ class BaseController extends Controller {
         return $paramValue;
     }
 
+    /**
+     * 显示视图
+     *
+     * @param $view
+     * @return \Illuminate\View\View
+     */
     protected function showView($view) {
         $baseURL = \URL::to('/');
 
@@ -127,5 +157,36 @@ class BaseController extends Controller {
         $this->data['mediaURL'] = $baseURL . "/media/";
 
         return \View::make($view, $this->data);
+    }
+
+    /**
+     * 获取主页面菜单
+     *
+     * @param $userId
+     * @return array
+     */
+    protected function getGlobalMenus($userId) {
+        $user = UserModule::getUserById($userId);
+        if($user->status == UserModule::STATUS_ADMIN) {
+            $menus = MenuModule::getAllDisplayMenus();
+        }else{
+            $role = RoleModule::getRoleById($user->role_id);
+            $menuIds = PermissionModule::getPermissionByRoleId($role->id);
+            $menus =  MenuModule::getMenuByIds($menuIds);
+        }
+
+        return array('menus' => $menus);
+    }
+
+    /**
+     * 判断用户是否登录
+     *
+     * @return bool
+     */
+    protected function isLogin() {
+        if(\Session::has('user_id')) {
+            return true;
+        }
+        return false;
     }
 }

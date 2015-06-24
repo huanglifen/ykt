@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
@@ -24,7 +23,6 @@
     <link href="{{{$mediaURL}}}css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     @section("otherCss")
-
         @show
 </head>
 @yield("content")
@@ -52,9 +50,7 @@
 <script src="{{{$mediaURL}}}js/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="{{{$mediaURL}}}js/jquery.uniform.min.js" type="text/javascript" ></script>
 <!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="{{{$mediaURL}}}js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="{{{$mediaURL}}}js/jquery.backstretch.min.js" type="text/javascript"></script>
+<script src="{{{$jsURL}}}common.js" type="text/javascript" ></script>
 <script>
     var baseURL = "<?php echo $baseURL .'/' ?>";
     var jsURL = baseURL + "asset/js/";

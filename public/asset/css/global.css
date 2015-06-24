@@ -1,6 +1,6 @@
-/***
-Login page
-***/
+/***Login page***/
+
+
 
 /* logo page */
 .login {
@@ -126,7 +126,7 @@ Login page
 .footer .copyright {
     margin-top: 20px;
 }
-
+/****************************login.css end ***********************************/
 
 /** default.css **/
 /***
@@ -137,6 +137,13 @@ Reset and overrides
 ***/
 body {
     background-color: #3d3d3d !important;
+}
+.right-main-color {
+    background-color : #fff !important;
+}
+table.table {table-layout:fixed;}
+table.table td{
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 /***
 Page header
@@ -160,7 +167,7 @@ Page header
 }
 
 .header .welcome-group {
-    margin-right : 0px;
+    margin-right : 25px;
     margin-top : -21px;
 }
 
@@ -433,6 +440,17 @@ Landscape phone to portrait tablet
     }
 }
 
+/****************************** default.css  end *********************************/
+
+/*******************style.css start ******************************/
+.breadcrumb a,
+.breadcrumb i,
+.breadcrumb span {
+    color: #333;
+    font-size: 14px;
+    text-shadow:none;
+}
+/*******************style.css end ******************************/
 /** main page**/
 .welcome-pic {
     background-image : url('/asset/image/huanying.jpg');
@@ -441,4 +459,27 @@ Landscape phone to portrait tablet
 /** main.index page **/
 .padding-top-50 {
     padding-top : 50px;
+}
+
+.margin-right-10 {
+    margin-right : 10px;
+}
+/*********main.role *********/
+.tree div.checker {
+    margin-right : 0px !important;
+    margin-top : -2px;
+    margin-left : 3px;
+}
+.tree a[data-role="leaf"] div.checker {
+    margin-left : 20px;
+}
+
+
+/* jQuery.Validate css */
+input.error{border: 1px solid #b94a48;}
+span.error{
+    color: #b94a48;
+    margin-top : 6px;
+    padding-left : 10px;
+    display : inline-block;
 }

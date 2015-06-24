@@ -6,7 +6,10 @@
     <!-- BEGIN CONTAINER -->
     <div class="page-container row-fluid" >
         @include("common.left")
-        @yield("context")
+        <div class="page-content">
+         <iframe frameborder="0" scrolling="auto" id="rightMain" name="rightMain" src="{{{$baseURL}}}/main/welcome" style="Z-INDEX: 1; VISIBILITY: inherit; OVERFLOW: auto; WIDTH: 100%; min-height: 756px;">
+         </iframe>
+        </div>
     </div>
     <!-- END CONTAINER -->
     @stop
@@ -37,5 +40,17 @@
             jQuery(document).ready(function() {
                 App.init();
             });
+            $("ul.sub-menu li").on('click', function() {
+                var that = $(this);
+                var child = that.find('ul');
+                if(child.length <= 0) {
+                    $("li.menu").removeClass('active');
+                    var parent = that.parents('li.menu');
+                    parent.addClass("active");
+                    $("ul.sub-menu li").removeClass("active");
+                    that.addClass("active");
+                }
+            })
         </script>
-            @stop
+@stop
+

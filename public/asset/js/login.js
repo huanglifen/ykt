@@ -9,19 +9,16 @@ var Login = function () {
 	            errorClass: 'help-inline', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            rules: {
-	                username: {
+	                name: {
 	                    required: true
 	                },
 	                password: {
 	                    required: true
-	                },
-	                remember: {
-	                    required: false
 	                }
 	            },
 
 	            messages: {
-	                username: {
+	                name: {
 	                    required: "请输入用户名."
 	                },
 	                password: {
@@ -30,7 +27,7 @@ var Login = function () {
 	            },
 
 	            invalidHandler: function (event, validator) { //display error alert on form submit   
-	                $('.alert-error', $('.login-form')).show();
+	                //$('.alert-error', $('.login-form')).show();
 	            },
 
 	            highlight: function (element) { // hightlight error inputs
@@ -48,18 +45,37 @@ var Login = function () {
 	            },
 
 	            submitHandler: function (form) {
-                    window.location.href =  baseURL + "main/log-in";
+                    login();
 	            }
 	        });
 
 	        $('.login-form input').keypress(function (e) {
 	            if (e.which == 13) {
 	                if ($('.login-form').validate().form()) {
-                        window.location.href = baseURL + "main/log-in";
+                        login();
 	                }
 	                return false;
 	            }
 	        });
+
+            var login = function() {
+                $('.alert-error', $('.login-form')).hide();
+                var data = $("#loginForm").serialize();
+                $.ajax({
+                    url: baseURL + "main/log-in",
+                    dataType: 'json',
+                    type: "POST",
+                    data: data,
+                    success: function (d) {
+                        if (d.status == 0) {
+                            window.location.href=baseURL;
+                        }
+                        else {
+                            $('.alert-error', $('.login-form')).show();
+                        }
+                    }
+                });
+            }
         }
 
     };

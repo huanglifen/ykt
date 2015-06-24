@@ -2033,7 +2033,6 @@
 			{
 				aiIndex = _fnReOrderIndex( oSettings, json.sColumns );
 			}
-			
 			var aData = _fnGetObjectDataFn( oSettings.sAjaxDataProp )( json );
 			for ( var i=0, iLen=aData.length ; i<iLen ; i++ )
 			{
