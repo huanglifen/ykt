@@ -1,0 +1,22 @@
+<?php
+return array(
+    'error_parent_not_exist' => '父行业不存在',
+    'error_industry_over_max' => '超过了最大行业数',
+    'error_has_child' => '含有子行业，不能被删除',
+    'error_industry_not_exist' => '行业不存在',
+    'error_industry_has_exist' => '同级行业下名称不能重复',
+    'error_has_child_cannot_change_parentId' => '该行业下有子行业，不能修改该行业的所属行业',
+    'error_circle_not_exist' => '商圈不存在',
+    'The name field is required.' => '请输入名称',
+    'The account field is required.' => '请输入账号',
+    'The password field is required.' => '请输入登录密码',
+    'The number field is required.' => '请输入商户编号',
+    'The discount must be a number.' => '协议折扣为0至10之间的数字',
+    'The title field is required.' => '请输入标题',
+    'The content field is required.' => '请输入内容',
+    'The amount field is required.' => '请输入数量',
+    'The remain amount field is required.' => '请输入剩余数量',
+    'The start time field is required.' => '请输入开始时间',
+    'The end time field is required.' => '请输入结束时间',
+    'error_endTime_must_greater_than_startTime' => '结束时间不能早于开始时间',
+);
