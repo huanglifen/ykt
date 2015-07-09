@@ -1,4 +1,6 @@
 <?php namespace App\Controllers;
+
+use App\Module\CardLogModule;
 use App\Module\CardModule;
 use App\Module\CardTypeModule;
 use App\Module\LogModule;
@@ -249,6 +251,23 @@ class CardController extends  BaseController{
         $this->outputErrorIfFail($result);
         LogModule::log("删除卡类型：$name", LogModule::TYPE_DEL);
 
+        return $this->outputContent($result);
+    }
+
+    /**
+     * 查看卡操作记录
+     *
+     * @return string
+     */
+    public function getLog() {
+        $this->outputUserNotLogin();
+
+        $cardId = $this->getParam('id', 'required');
+        $this->outputErrorIfExist();
+
+        $logs = CardLogModule::getCardLog($cardId, 0 , 500);
+        $type = CardLogModule::$type;
+        $result = array("logs" => $logs, 'type' => $type);
         return $this->outputContent($result);
     }
 }

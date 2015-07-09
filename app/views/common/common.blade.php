@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     @section('title')
-    <title>一卡通后台管理系统</title>
+    <title>河北一卡通后台管理系统</title>
     @show
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />

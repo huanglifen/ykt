@@ -8,7 +8,7 @@
     @section("footer")
     @stop
     @section("otherJs")
-        <script src="{{{$jsURL}}}/app.js"></script>
+        <script src="{{{$jsURL}}}app.js"></script>
         <script>
             jQuery(document).ready(function() {
                 App.init();

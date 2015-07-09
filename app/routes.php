@@ -25,3 +25,15 @@ Route::controller("log", "App\Controllers\LogController");
 Route::controller("card", "App\Controllers\CardController");
 Route::controller("customer", "App\Controllers\CustomerController");
 Route::controller("import", "App\Controllers\ImportController");
+Route::controller("paycode", "App\Controllers\PayCodeController");
+Route::controller("pay", "App\Controllers\PayController");
+Route::controller("industry", "App\Controllers\IndustryController");
+Route::controller("circle", "App\Controllers\BusinessDistrictController");
+Route::controller("business", "App\Controllers\BusinessController");
+Route::controller("activity", "App\Controllers\ActivityController");
+Route::controller("coupon", "App\Controllers\CouponController");
+Route::controller("help", "App\Controllers\HelpController"); //帮助
+Route::controller("news", "App\Controllers\NewsController"); //新闻
+Route::controller("product", "App\Controllers\ProductController"); //产品介绍
+Route::controller("contentType", "App\Controllers\ContentTypeController"); //内容类型
+Route::controller("carousel", "App\Controllers\CarouselController");//轮播图

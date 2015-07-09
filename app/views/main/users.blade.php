@@ -50,8 +50,8 @@
                                 <th style="width:9%">角色</th>
                                 <th style="width:9%">部门</th>
                                 <th style="width:10%">手机号</th>
-                                <th style="width:9%">电子邮箱</th>
-                                <th style="width:9%">登录时间</th>
+                                <th style="width:12%">电子邮箱</th>
+                                <th style="width:15%">登录时间</th>
                                 <th style="width:9%">登录次数</th>
                                 <th>是否启用</th>
                                 <th style="width:80px">操作</th>

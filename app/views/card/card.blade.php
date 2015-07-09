@@ -23,7 +23,7 @@
                 <div class="portlet box">
                     <div class="portlet-body">
                         <div class="clearfix">
-                            <form id="jsFileUpload" enctype="multipart/form-data">
+                            <form id="jsFileUpload" name="fileUpload" enctype="multipart/form-data">
                                 <div class="control-group">
                                     <div class="controls">
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -41,7 +41,7 @@
                                                 <a href="javascript:;" id="jsImport" class="btn green margin-right-10">
                                                     <i class="icon-upload"></i>开始导入
                                                 </a>
-                                                <a href="javascript:;" class="btn green pull-right">
+                                                <a href="{{{$baseURL}}}/demo/carddemo.xlsx" class="btn green">
                                                     <i class="icon-download"></i>下载模板
                                                 </a>
                                             </div>
@@ -49,7 +49,7 @@
                                         </div>
                                 </div>
                             </form>
-                            <form action="#" class="form-search ">
+                            <form action="#" class="form-search">
                                 <div class="row-fluid span8" style="margin-bottom: 20px;">
                                     <div class="span3">
                                         <div class="control-group">
@@ -125,14 +125,46 @@
     </div>
     <!-- END PAGE CONTAINER-->
     <!-- END PAGE -->
+    <div class="portlet box">
+        <div class="portlet-body">
+            <!-- Modal -->
+            <div id="myModal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 id="myModalLabel1">操作记录</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table mb-none">
+                            <thead>
+                            <tr>
+                                <th >#</th>
+                                <th style="width:25%">用户</th>
+                                <th style="width:25%">类型</th>
+                                <th style="width:35%">时间</th>
+                            </tr>
+                            </thead>
+                            <tbody id="JsModalTbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true" id="JsCloseModal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a  href="#myModal1" data-toggle="modal" role="button" class="btn mini green margin-right-10 hide" id="JsModal"></a>
 @stop
 @section('otherJs')
     <script src="{{{$mediaURL}}}js/select2.min.js" type="text/javascript"></script>
     <script src="{{{$mediaURL}}}js/jquery.dataTables.js" type="text/javascript"></script>
     <script src="{{{$mediaURL}}}js/DT_bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="{{{$mediaURL}}}js/bootstrap-fileupload.js"></script>
-    <script src="{{{$jsURL}}}app.js" type="text/javascript"></script>
     <script src="{{{$mediaURL}}}js/table-managed.js" type="text/javascript"></script>
+    <script src="{{{$jsURL}}}jquery.form.js" type="text/javascript"></script>
+    <script src="{{{$jsURL}}}app.js" type="text/javascript"></script>
     <script>
         $(function () {
             var state = <?php echo json_encode($status); ?>;
@@ -194,7 +226,7 @@
                         return types[obj.aData.type];
                     }
                 }, {
-                    "mData": "status",
+                    "mData": null,
                     "aTargets": [5],
                     "fnRender" : function(obj) {
                         return state[obj.aData.status];
@@ -209,7 +241,13 @@
                     "mData": null,
                     "aTargets": [8],
                     "fnRender" : function(obj) {
-                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'card/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="查看更多" href="javascript:;" class="JsMore btn mini green green margin-right-10"><i class="icon-file"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
+                        if(obj.aData.status <=1) {
+                            return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'card/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a>' +
+                                    '<a title="查看更多"  data-name="'+obj.aData.cardno+'" href="javascript:;"class="JsMore btn mini green margin-right-10"><i class="icon-file"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
+                        }else{
+                            return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'card/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a>' +
+                                    '<a title="查看更多" data-name="'+obj.aData.cardno+'" href="javascript:;" class="JsMore btn mini green margin-right-10"><i class="icon-file"></i></a></span>';
+                        }
                     }
                 }]
             });
@@ -246,19 +284,62 @@
                 });
             });
 
-            $("#jsImport").on('click', function() {
-                var data = $("#jsFileUpload").serialize();
-                alert('hi');
-                console.log(data);
-                $.ajax({
-                    'type' : 'post',
-                    'data' : data,
-                    'dataType' : 'json',
-                    'url' : baseURL + 'import/cards',
-                    'success' : function() {
 
+            $("#jsImport").on('click', function() {
+                if(! $("input[name=file]").val()) {
+                    alert('请选择要上传的excel文件');
+                    return false;
+                }
+                    var form = $("form[name=fileUpload]");
+                    var options  = {
+                        url : '/import/cards',
+                        type : 'post',
+                        dataType : 'json',
+                        success:function(json) {
+                            if(json.status != 0) {
+                                alert(json.result);
+                            }else{
+                                if(json.result.success >= json.result.count) {
+                                    alert('导入成功')
+                                }else {
+                                    alert("导入成功"+json.result.success+"条，导入失败"+(json.result.count - json.result.success)+"条");
+                                }
+                            }
+                        }
+                    };
+                    form.ajaxSubmit(options);
+            });
+
+            $("body").on("click", '.JsMore', function() {
+                $("#JsModalTbody").html("");
+                $("#myModalLabel1").text("操作记录");
+                var id = $(this).parent().attr('data-id');
+                var name = $(this).attr("data-name");
+                $.ajax({
+                    'data' : "id="+id,
+                    'dataType' : 'json',
+                    'type' : 'get',
+                    'url' : baseURL + 'card/log',
+                    'success' : function(json) {
+                        var html = '';
+                        var logs = json.result.logs;
+                        $.each(logs, function(i, item) {
+                           html +="<tr><td>" +
+                           item.id +
+                           "</td><td>" +
+                           item.username +
+                           "</td><td>" +
+                           json.result.type[item.type] +
+                           "</td><td>" +
+                           item.created_at +
+                           "</td></tr>";
+                        });
+                        $("#JsModalTbody").html(html);
+                        $("#myModalLabel1").text(name+"的操作记录");
+                        $("#JsModal").click();
                     }
                 });
+
             });
         });
     </script>

@@ -117,11 +117,14 @@ class RoleModule extends BaseModule
      * @return array|\Illuminate\Database\Eloquent\Collection|static[]
      */
     public static function getRoles($offset, $limit, $keyword) {
+        $roles = new Role();
         if($keyword) {
-            $roles = Role::where('name', 'like', "%$keyword%")->offset($offset)->limit($limit)->get();
-        }else{
-            $roles = Role::offset($offset)->limit($limit)->get();
+            $roles->where('name', 'like', "%$keyword%");
         }
+        if($limit > 0) {
+            $roles->offset($offset)->limit($limit);
+        }
+        $roles = $roles->get();
         return $roles;
     }
 

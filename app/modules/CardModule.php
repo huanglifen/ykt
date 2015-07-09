@@ -50,6 +50,10 @@ class CardModule extends BaseModule {
      * @return array
      */
     public static function deleteCard($id) {
+        $card = self::getCardById($id);
+        if($card->status > 1) {
+            return array('status' => false, 'msg' => 'error_card_cannot_delete');
+        }
         Card::destroy($id);
         return array('status' => true);
     }
@@ -107,12 +111,12 @@ class CardModule extends BaseModule {
             $card = $card->where('card_type', $cardType);
         }
         if($type > -1) {
-            $card = $card->where('type', $type);
+            $card = $card->where('card.type', $type);
         }
         if($status) {
             $card = $card->where('status', $status);
         }
-        if($limit) {
+        if($limit > 0) {
             $card = $card->offset($offset)->limit($limit);
         }
         $card->selectRaw("card.*,ifnull(card_type.name,'无') as cardtypename");
@@ -164,5 +168,63 @@ class CardModule extends BaseModule {
             $card->checkcode = self::encrypt($card->checkcode, "D");
         }
         return $cards;
+    }
+
+    /**
+     * 解密卡号
+     *
+     * @param $obj
+     * @return mixed
+     */
+    public static function decodeCardNo(&$obj) {
+        foreach($obj as $o) {
+            $o->cardno = self::encrypt($o->cardno, "D");
+        }
+        return $obj;
+    }
+
+    /**
+     * 对导入的数据进行处理，批量添加卡
+     *
+     * @param $cards
+     * @return array
+     */
+    public static function importCards($cards) {
+        $cardType = CardTypeModule::getCardType(0, 0);
+        $success = 0;
+        $count = count($cards);
+
+        foreach($cards as $c) {
+            $cardNo = $c[1];
+            $checkCode = $c[2];
+            $cType = 0;
+            $type = 0;
+            $status = 1;
+            foreach($cardType as $type) {
+                if($type->name == $c[0]) {
+                    $cType = $type->id;
+                    break;
+                }
+            }
+            foreach(self::$type as $k => $t) {
+                if($t == $c[3]) {
+                    $type = $k;
+                }
+            }
+            foreach(self::$status as $key => $s) {
+                if($s == $c[4]) {
+                    $status = $key;
+                }
+            }
+           $result = self::addCard($cardNo, $checkCode, $cType, $type, $status);
+            if($result['id'] > 0) {
+                $success++;
+            }
+        }
+        return array('success' => $success, 'count' => $count);
+    }
+
+    public static function bindCard($cardNo, $checkCode, $customerId, $cardType) {
+
     }
 }

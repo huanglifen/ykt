@@ -717,7 +717,6 @@ var App = function () {
         init: function () {
 
             //IMPORTANT!!!: Do not modify the core handlers call order.
-
             //core handlers
             handleInit();
             handleResponsiveOnResize(); // set and handle responsive    
@@ -743,8 +742,10 @@ var App = function () {
             handlePopovers(); // handles bootstrap popovers
             handleAccordions(); //handles accordions
             handleChoosenSelect(); // handles bootstrap chosen dropdowns     
-
-            App.addResponsiveHandler(handleChoosenSelect); // reinitiate chosen dropdown on main content resize. disable this line if you don't really use chosen dropdowns.
+            App.addResponsiveHandler(function(){
+                handleChoosenSelect();
+            })
+            //App.addResponsiveHandler(handleChoosenSelect); // reinitiate chosen dropdown on main content resize. disable this line if you don't really use chosen dropdowns.
         },
 
         fixContentHeight: function () {

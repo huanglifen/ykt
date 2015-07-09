@@ -1,4 +1,5 @@
 <?php namespace App\Controllers;
+use App\Module\BaseModule;
 use App\Module\LogModule;
 use App\Module\UserModule;
 
@@ -40,6 +41,7 @@ class LogController extends  BaseController {
         $offset = $this->getParam('iDisplayStart');
         $limit = $this->getParam('iDisplayLength');
         $limit = $limit ? $limit : BaseModule::NUM_PER_PAGE;
+        $limit = $limit > 20 ? 20 : $limit;
 
         $this->outputErrorIfExist();
         if($begin) {

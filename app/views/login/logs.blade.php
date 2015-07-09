@@ -123,8 +123,8 @@
                 "bSort": false,
                 "bFilter": false,
                 "aLengthMenu": [
-                    [10, 15, 20, -1],
-                    [10, 15, 20, "All"] // change per page values here
+                    [10, 15, 20],
+                    [10, 15, 20] // change per page values here
                 ],
                 "iDisplayLength": 10,
                 "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",

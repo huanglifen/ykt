@@ -5,10 +5,6 @@ abstract class BaseModule {
     const STATUS_OPEN= 1;
     const STATUS_CLOSE = 2;
 
-    public function __construct() {
-
-    }
-
     /**
      * 哈希
      *
@@ -34,6 +30,11 @@ abstract class BaseModule {
         return ($salt . hash ( 'sha256', $salt . $string )) === $hashedString;
     }
 
+    /**
+     * 获取当前url
+     *
+     * @return string
+     */
     protected static function current_url() {
         $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
         $php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
@@ -42,6 +43,13 @@ abstract class BaseModule {
         return $sys_protocal . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $relate_url;
     }
 
+    /**
+     * 加/解密
+     * @param $string
+     * @param $operation "D"为解密，"E"为加密
+     * @param string $key
+     * @return mixed|string
+     */
     public static function encrypt($string, $operation, $key = '') {
         $key = md5($key);
         $key_length = strlen($key);
