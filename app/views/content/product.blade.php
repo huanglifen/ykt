@@ -9,10 +9,10 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "卡类型管理";
+        $breadTitle = "内容管理";
         $breadcrumb = array(
-                array("卡片管理"),
-                array("卡类型管理", $baseURL . '/card/type'));
+                array("内容管理"),
+                array("卡产品介绍", $baseURL . '/product/index'));
         ?>
         @include('common.bread')
         <!-- BEGIN PAGE CONTENT-->
@@ -23,17 +23,19 @@
                     <div class="portlet-body">
                         <div class="clearfix">
                             <div class="btn-group">
-                                <a href="{{{$baseURL}}}/card/type-add" class="btn margin-right-10 green">
+                                <a href="{{{$baseURL}}}/product/add" class="btn margin-right-10 green">
                                     新增<i class="icon-plus"></i>
                                 </a>
                             </div>
                         </div>
-                        <table class="table table-striped table-bordered table-hover" id="datatable_cards">
+                        <table class="table table-striped table-bordered table-hover" id="datatable_products">
                             <thead>
                             <tr>
-                                <th style="width:25%">名称</th>
-                                <th style="width:25%">类型</th>
-                                <th style="width:25%">操作</th>
+                                <th style="width:10%">名称</th>
+                                <th style="width:10%">类型</th>
+                                <th style="width:40%">图片路径</th>
+                                <th style="width:30%">介绍</th>
+                                <th style="width:10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,7 +62,7 @@
             var typeArr = <?php echo json_encode(\App\Module\CardTypeModule::$type); ?>;
 
             App.init();
-            var tbl = $('#datatable_cards').dataTable({
+            var tbl = $('#datatable_products').dataTable({
                 "sScrollXInner": "100%",
                 "bServerSide": true,
                 "bDestroy": false,
@@ -95,27 +97,39 @@
                 "fnDrawCallback": function () {
                     App.initUniform();
                 },
-                "sAjaxDataProp": 'types',
-                "sAjaxSource": baseURL + 'card/card-type',
+                "sAjaxDataProp": 'products',
+                "sAjaxSource": baseURL + 'product/product',
                 "aoColumns": [{
                     "mData": "name",
                     "aTargets": [0]
                 }, {
-                    "mData": "type",
+                    "mData": null,
                     "aTargets": [1],
                     "fnRender" : function(obj) {
-                        return typeArr[obj.aData.type];
+                        return obj.aData.typeName;
                     }
                 }, {
                     "mData": null,
                     "aTargets": [2],
                     "fnRender" : function(obj) {
-                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'card/type-update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
+                        return obj.aData.picture;
+                    }
+                }, {
+                    "mData": null,
+                    "aTargets": [3],
+                    "fnRender" : function(obj) {
+                        return obj.aData.describe;
+                    }
+                }, {
+                    "mData": null,
+                    "aTargets": [4],
+                    "fnRender" : function(obj) {
+                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'product/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
                     }
                 }]
             });
             $("body").on('click','.JsDelete', function(){
-                if(! confirm('确定要删除该类型？')) {
+                if(! confirm('确定要删除该产品？')) {
                     return false;
                 }
                 var id = $(this).parent().attr('data-id');
@@ -123,7 +137,7 @@
                     'type' : 'post',
                     'dataType' : 'json',
                     'data' : 'id='+id,
-                    'url' : baseURL + 'card/type-delete',
+                    'url' : baseURL + 'product/delete',
                     'success' : function(json) {
                         Common.checkLogin(json);
                         if(json.status == 0) {

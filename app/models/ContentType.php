@@ -1,7 +1,10 @@
-<?php
+<?php namespace App\Model;
+
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2015/7/9
- * Time: 14:58
+ * 内容类型model
+ *
+ * @package App\Model
  */
+class ContentType extends \Eloquent {
+    protected $table = 'content_type';
+}

@@ -62,19 +62,17 @@ class ProductModule extends BaseModule {
     /**
      * 按条件获取产品介绍记录
      *
-     * @param string $keyword
      * @param int $offset
      * @param int $limit
      * @return $this|Product|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder|static|static[]
      */
-    public static function getProducts($keyword = '', $offset = 0, $limit = 0) {
+    public static function getProducts($offset = 0, $limit = 0) {
         $product = new Product();
-        if($keyword) {
-            $product = $product->where('name', 'like', "%$keyword%");
-        }
+        $product = $product->leftJoin('card_type', 'card_type.id', '=', 'product.type');
         if($limit > 0) {
             $product = $product->offset($offset)->limit($limit);
         }
+        $product = $product->selectRaw('product.*, card_type.name as typeName');
         $product = $product->get();
         return $product;
     }
@@ -82,15 +80,10 @@ class ProductModule extends BaseModule {
     /**
      * 按条件统计产品介绍
      *
-     * @param string $keyword
      * @return Product|\Illuminate\Database\Eloquent\Builder|int|static
      */
-    public static function countProducts($keyword = '') {
-        $product = new Product();
-        if($keyword) {
-            $product = $product->where('name', 'like', "%$keyword%");
-        }
-        $product = $product->count();
+    public static function countProducts() {
+        $product = Product::count();
         return $product;
     }
 

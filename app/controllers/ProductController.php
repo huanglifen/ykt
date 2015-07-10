@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 use App\Module\CardTypeModule;
+use App\Module\LogModule;
 use App\Module\ProductModule;
 
 /**
@@ -8,7 +9,7 @@ use App\Module\ProductModule;
  * @package App\Controllers
  */
 class ProductController extends  BaseController {
-
+    public $langFile = 'content';
     /**
      * 卡产品介绍页面
      *
@@ -29,14 +30,13 @@ class ProductController extends  BaseController {
     public function getProduct() {
         $this->outputUserNotLogin();
 
-        $keyword = $this->getParam('keyword');
         $offset = $this->getParam('iDisplayStart');
         $limit = $this->getParam('iDisplayLength');
 
         $this->outputErrorIfExist();
 
-        $products = ProductModule::getProducts($keyword, $offset, $limit);
-        $total = ProductModule::countProducts($keyword);
+        $products = ProductModule::getProducts($offset, $limit);
+        $total = ProductModule::countProducts();
         $result = array('products' => $products, 'iTotalDisplayRecords' => $total, '_iRecordsTotal' => $total, 'iDisplayStart' => $offset, 'iDisplayLength' => $limit);
         return json_encode($result);
     }
@@ -71,6 +71,9 @@ class ProductController extends  BaseController {
 
         $result = ProductModule::addProduct($name, $picture, $type, $describe);
         $this->outputErrorIfFail($result);
+
+        $content ="新增产品介绍：$name";
+        LogModule::log($content, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -80,7 +83,7 @@ class ProductController extends  BaseController {
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function getUpdate($id) {
+    public function getUpdate($id = 0) {
         if(! $this->isLogin()) {
             return \Redirect::to('/login');
         }
@@ -93,7 +96,7 @@ class ProductController extends  BaseController {
         }
         $cardType = CardTypeModule::getCardType(0, 0);
         $this->data = compact('cardType', 'product');
-        return $this->showView('content.product-add');
+        return $this->showView('content.product-update');
     }
 
     /**
@@ -113,6 +116,8 @@ class ProductController extends  BaseController {
 
         $result = ProductModule::updateProduct($id, $name, $picture, $type, $describe);
         $this->outputErrorIfFail($result);
+        $content ="修改产品介绍：$name";
+        LogModule::log($content, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -127,8 +132,12 @@ class ProductController extends  BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $product = ProductModule::getProductById($id);
         $result = ProductModule::deleteProduct($id);
         $this->outputErrorIfFail($result);
+
+        $content ="删除产品介绍：$product->name";
+        LogModule::log($content, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

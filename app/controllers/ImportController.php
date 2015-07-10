@@ -75,7 +75,7 @@ class ImportController extends BaseController{
         }
         Utils::createDirectoryIfNotExist($this->destination);
 
-        $fileName = ip2long(\Input::getClientIp()) . '_' . time() . '_';
+        $fileName = time() . '_';
         $fileNewName = $fileName . md5_file($file->getRealPath()) . '.' . $extension;
         $file->move($this->destination, $fileNewName);
         $fileNewPath = $this->destination  . $fileNewName;

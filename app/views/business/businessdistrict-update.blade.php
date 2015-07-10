@@ -128,8 +128,7 @@
                         success: function (d) {
                             Common.checkLogin(d);
                             if (d.status == 0) {
-                                alert("编辑成功");
-                                window.location.reload();
+                                alert("修改成功");
                             }
                             else {
                                 alert(d.result);

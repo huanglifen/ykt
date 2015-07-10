@@ -579,7 +579,7 @@
                         Common.checkLogin(data);
                         Common.checkError(data);
                     }else{
-                        window.location.reload();
+                        alert('修改成功！');
                     }
                 }
             });

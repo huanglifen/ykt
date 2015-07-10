@@ -130,7 +130,6 @@
                             Common.checkLogin(d);
                             if (d.status == 0) {
                                 alert("修改成功！");
-                                window.location.reload();
                             }
                             else {
                                 if(d.status == 1001) {
