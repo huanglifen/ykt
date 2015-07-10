@@ -65,7 +65,7 @@ class CardTypeModule extends BaseModule {
      */
     public static function getCardType($offset, $limit) {
         $cardType = new CardType();
-        if($limit) {
+        if($limit > 0) {
             $cardType->offset($offset)->limit($limit);
         }
         return $cardType->get();

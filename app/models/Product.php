@@ -1,7 +1,10 @@
-<?php
+<?php namespace App\Model;
+
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2015/7/9
- * Time: 15:00
+ * 产品model层
+ *
+ * @package App\Model
  */
+class Product extends \Eloquent {
+    protected $table = 'product';
+}

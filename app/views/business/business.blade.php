@@ -101,7 +101,7 @@
     <script>
         $(function () {
             App.init();
-            Common.bindCitySelect(true);
+            Common.bindCitySelect(true, false);
             var tbl = $('#datatable_business').dataTable({
                 "sScrollXInner": "100%",
                 "bServerSide": true,

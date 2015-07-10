@@ -63,7 +63,10 @@ Common.checkLogin = function(d) {
     }
 }
 
-Common.bindCitySelect = function(flag ) {
+Common.bindCitySelect = function(flag, loadMap ) {
+    if(typeof loadMap == 'undefined') {
+        loadMap = true;
+    }
     $("#cityId").chosen().change(function() {
         var $this = $(this);
         var cityId = $this.val();
@@ -82,12 +85,16 @@ Common.bindCitySelect = function(flag ) {
                 });
                 $('#districtId').html(option.join(''));
                 $("#districtId").trigger("liszt:updated");
-                Common.location();
+                if(loadMap) {
+                    Common.location();
+                }
             }
         })
     });
     $("#districtId").chosen().change(function() {
-        Common.location();
+        if(loadMap) {
+            Common.location();
+        }
     })
 }
 
