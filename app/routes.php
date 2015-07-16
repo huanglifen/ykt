@@ -37,3 +37,5 @@ Route::controller("news", "App\Controllers\NewsController"); //新闻
 Route::controller("product", "App\Controllers\ProductController"); //产品介绍
 Route::controller("contentType", "App\Controllers\ContentTypeController"); //内容类型
 Route::controller("carousel", "App\Controllers\CarouselController");//轮播图
+Route::controller('weichat', "App\Controllers\WeichatController"); //微信接收消息服接口
+

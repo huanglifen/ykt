@@ -19,7 +19,7 @@ class CreateContentTable extends Migration {
 	{
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
-            $table->string('title', 500);
+            $table->string('title', 150);
             $table->string('brief', 1000); //内容简介
             $table->text('content');
             $table->tinyInteger("display"); //是否显示 1 显示 2不显示
@@ -27,6 +27,8 @@ class CreateContentTable extends Migration {
             $table->tinyInteger('sort');
             $table->string('author', 100); //编辑人
             $table->tinyInteger('type'); //category为1时，对应content_type表里面的类型，category为2时，1为首页，2为旅游 3为ETC
+            $table->integer('start_time');
+            $table->integer('end_time');
             $table->tinyInteger('category'); //大类型， 1为帮助 2为新闻
             $table->timestamps();
         });

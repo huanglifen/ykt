@@ -117,12 +117,13 @@
                 submitHandler: function (form) {
                     var data = target.serialize();
                     data +="&businessId="+businessId;
+                    data +="&id="+<?php echo $id ;?>;
 
                     $(".JsErrorTarget").removeClass('error');
                     $(".JsErrorTip").text('').hide();
 
                     $.ajax({
-                        url: baseURL + "activity/add",
+                        url: baseURL + "activity/update",
                         dataType: 'json',
                         type: "POST",
                         data: data,

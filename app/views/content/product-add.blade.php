@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row-fluid">
-                                <div class="span7 ">
+                                <div class="span10 ">
                                     <form id="jsPicUpload" name="picUpload" enctype="multipart/form-data">
                                         <div class="control-group">
                                             <label class="control-label">卡样图片</label>

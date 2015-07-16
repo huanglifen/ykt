@@ -2,14 +2,17 @@
 
 return array(
     'weixin'   => array(
-        'app_id'       => 'wxbb9470032b0bf571',
-        'app_secret'   => '0de2a4fd0d9113ed8ed0b7c6d9769a30',
+        //'app_id'       => 'wxbb9470032b0bf571',
+        //'app_secret'   => '0de2a4fd0d9113ed8ed0b7c6d9769a30',
+        'app_id' => 'wx8505d9cd5dd397b5',
+        'app_secret' => 'b399a513ad20f77505e429a8cbad9403',
         'token'        => 'suolong123',
         'token_url'    => 'cardhebeiyikatongcard',
         'pay_sign_key' => '',
         'partner_id'   => '',
         'partner_key'  => '',
         'sign_type'    => 'SHA1',
+        'token_access_url' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',
     ),
     'merchant' => array(
         'api_url'      => 'http://192.192.219.186:9999',

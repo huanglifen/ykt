@@ -186,8 +186,9 @@
                 data += "&cityId="+$("#cityId").val();
                 data += "&picture="+$("#jsPicImg").attr('data');
                 data += "&businessId="+businessId;
+                data +="&id="+<?php echo $id ;?>;
                 $.ajax({
-                    url: baseURL + "coupon/add",
+                    url: baseURL + "coupon/update",
                     dataType: 'json',
                     type: "POST",
                     data: data,

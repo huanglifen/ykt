@@ -1,7 +1,5 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2015/7/9
- * Time: 15:00
- */
+<?php namespace App\Model;
+
+class Carousel extends \Eloquent {
+    protected $table = 'carousel';
+}

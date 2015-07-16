@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 
+use App\Module\ContentModule;
 use App\Module\LogModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -11,7 +12,7 @@ use App\Module\ContentTypeModule;
  * @package App\Controllers
  */
 class ContentTypeController extends  BaseController {
-
+    public $langFile = 'content';
     /**
      * 显示首页
      *
@@ -129,6 +130,10 @@ class ContentTypeController extends  BaseController {
 
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
+        if($id == ContentModule::COMPANY_BRIEF) {
+            $result = array('status' => false, 'msg' => 'error_id_cannot_delete');
+            $this->outputErrorIfFail($result);
+        }
         $result = ContentTypeModule::deleteContentType($id);
         $this->outputErrorIfFail($result);
 

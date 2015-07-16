@@ -34,7 +34,6 @@ class ContentTypeModule extends BaseModule {
      */
     public static function deleteContentType($id) {
         $result = array('status' => false, 'name' => '');
-
         $contentType = self::getContentTypeById($id);
         if(! empty($contentType)) {
             $result = array('status' => true, 'name' => $contentType->name);
