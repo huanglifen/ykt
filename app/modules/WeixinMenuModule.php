@@ -10,6 +10,8 @@ use App\Model\WeixinMenu;
 class WeixinMenuModule extends BaseModule {
     const LEVEL_ONE = 3; //一级菜单至多3个
     const LEVEL_TWO = 5; //每个一级菜单下二级菜单至多5个
+    const TYPE_CLICK = 'CLICK';
+    const TYPE_VIEW = 'VIEW';
 
     /**
      * 新增一个菜单
@@ -97,9 +99,51 @@ class WeixinMenuModule extends BaseModule {
      */
     public static function getMenus() {
         $menu = new WeixinMenu();
-        $menu = $menu->orderBy("order_no", "ASC")->get();
+        $menu = $menu->where('is_show', 1)->orderBy("order_no", "ASC")->get();
         $menu = self::getTree($menu);
         return $menu;
+    }
+
+    /**
+     * 获取微信菜单的json格式
+     *
+     * @param $menus
+     * @return mixed
+     */
+    public static function getJsonMenu($menus) {
+        $data = array();
+        foreach($menus as $menu) {
+            if(count($menu->children)) {
+                $arr = array();
+                $arr['name'] = $menu->name;
+                foreach($menu->children as $child) {
+                    $arr['sub_button'] = self::getMenuKey($child);
+                }
+            }else{
+                $arr = self::getMenuKey($menu);
+            }
+            $data[] = $arr;
+        }
+        $result['button'] = $data;
+        return  $result;
+    }
+
+    /**
+     * 获取每个菜单对应字段的值
+     *
+     * @param $menu
+     * @return array
+     */
+    private static function getMenuKey($menu) {
+        $arr = array();
+        $arr['name'] = $menu->name;
+        $arr['type'] = $menu->type;
+        if($arr['type'] == self::TYPE_CLICK) {
+            $arr['key'] = $menu->key;
+        }else{
+            $arr['url'] = $menu->url;
+        }
+        return $arr;
     }
 
     /**
@@ -113,6 +157,7 @@ class WeixinMenuModule extends BaseModule {
         $node = array();
         foreach($menus as $m) {
             if($m->parent_id == 0) {
+                $m->children = array();
                 $tree[$m->id] = $m;
             }else{
                 $node[] = $m;

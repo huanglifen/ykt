@@ -16,9 +16,9 @@ class CreateWMenuTable extends Migration {
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->integer("parent_id");
-            $table->string("name", 100);
-            $table->integer("category");
-            $table->tinyInteger("type");
+            $table->string("name", 30);
+            $table->integer("category"); //关联内容
+            $table->string("type", 10);
             $table->string("key", 100);
             $table->string("url", 200);
             $table->tinyInteger("is_show");

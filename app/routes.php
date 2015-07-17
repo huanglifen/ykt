@@ -38,4 +38,5 @@ Route::controller("product", "App\Controllers\ProductController"); //产品介�
 Route::controller("contentType", "App\Controllers\ContentTypeController"); //内容类型
 Route::controller("carousel", "App\Controllers\CarouselController");//轮播图
 Route::controller('weichat', "App\Controllers\WeichatController"); //微信接收消息服接口
+Route::controller('wmenu', "App\Controllers\WeixinMenuController");
 
