@@ -8,8 +8,8 @@ use App\Model\WeixinMenu;
  * @package App\Module
  */
 class WeixinMenuModule extends BaseModule {
-    const LEVEL_ONE = 3; //一级菜单至多3个
-    const LEVEL_TWO = 5; //每个一级菜单下二级菜单至多5个
+    const LEVEL_ONE_NUM = 3; //一级菜单至多3个
+    const LEVEL_TWO_NUM = 5; //每个一级菜单下二级菜单至多5个
     const TYPE_CLICK = 'CLICK';
     const TYPE_VIEW = 'VIEW';
 
@@ -28,6 +28,11 @@ class WeixinMenuModule extends BaseModule {
      * @return array
      */
     public static function addMenu($parentId, $name, $category, $type, $key, $url, $isShow, $isDel, $orderNo = 0) {
+        $siblings = WeixinMenu::where('parent_id', $parentId)->count();
+
+        if(($parentId == 0 && $siblings >= self::LEVEL_ONE_NUM) ||($parentId > 0 &&$siblings >= self::LEVEL_TWO_NUM) ) {
+            return array('status' => fasle, 'msg' => 'error_over_max_number');
+        }
         $menu = new WeixinMenu();
         $menu->parent_id = $parentId;
         $menu->name = $name;
@@ -54,7 +59,11 @@ class WeixinMenuModule extends BaseModule {
         if(empty($menu)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
         }
-        WeixinMenu::destroy($id);
+        $menu->is_del = 1;
+        $menu->save();
+        if($menu->parent_id == 0) {
+            WeixinMenu::where('parent_id', $id)->update(array('is_del'=> 1));
+        }
         return array('status' => true);
     }
 
@@ -99,7 +108,7 @@ class WeixinMenuModule extends BaseModule {
      */
     public static function getMenus() {
         $menu = new WeixinMenu();
-        $menu = $menu->where('is_show', 1)->orderBy("order_no", "ASC")->get();
+        $menu = $menu->where('is_show', 1)->where('is_del', 0)->orderBy("order_no", "ASC")->get();
         $menu = self::getTree($menu);
         return $menu;
     }
@@ -166,7 +175,9 @@ class WeixinMenuModule extends BaseModule {
         foreach($node as $n) {
             if(isset($tree[$n->parent_id])) {
                 $menu = &$tree[$n->parent_id];
-                $menu->children[] = $n;
+                $children = $menu->children;
+                $children[] = $n;
+                $menu->children = $children;
             }
         }
         return $tree;

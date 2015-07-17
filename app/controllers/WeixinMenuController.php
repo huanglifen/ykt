@@ -35,18 +35,20 @@ class WeixinMenuController extends BaseController {
 
         $id = $this->getParam('id', 'required|numeric');
         $parentId = $this->getParam('parentId', 'required|numeric');
-        $name = $this->getParam('name', 'required|max:100');
+        $name = $this->getParam('name', 'required|max:30');
         $category = $this->getParam('category');
-        $type = $this->getParam('type', 'required');
-        $key = $this->getParam('key', 'required');
-        $url = $this->getParam('url', 'required');
-        $isShow = $this->getParam('isShow', 'required');
+        $type = $this->getParam('type');
+        $key = $this->getParam('key');
+        $url = $this->getParam('url');
+
         $this->outputErrorIfExist();
 
+        $key  = $key ? $key : '';
+        $url = $url ? $url : '';
         if($id) {
-            $result = WeixinMenuModule::updateMenu($id, $parentId, $name, $category, $type, $key, $url, $isShow, 0, 0);
+            $result = WeixinMenuModule::updateMenu($id, $parentId, $name, $category, $type, $key, $url, 1, 0, 0);
         } else {
-            $result = WeixinMenuModule::addMenu($parentId, $name, $category, $type, $key, $url, $isShow, 0, 0);
+            $result = WeixinMenuModule::addMenu($parentId, $name, $category, $type, $key, $url, 1, 0, 0);
         }
         $this->outputErrorIfFail($result);
         return $this->outputContent($result);

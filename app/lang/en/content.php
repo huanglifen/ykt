@@ -15,4 +15,5 @@ return array(
     'error_id_cannot_delete' => '该项为默认项，不能被删除',
     'The editor field is required.' => '请输入内容',
     'error_endTime_cannot_less_than_startTime' => '结束时间不能早于开始时间',
+    'error_over_max_number' => '一级菜单不能多于3个，每个菜单下的二级菜单不能多于5个',
 );
