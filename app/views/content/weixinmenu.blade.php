@@ -108,9 +108,9 @@
                                             <i class="jsCollapse" data-action="collapsed">-</i>
                                             @endif
                                             <span style="padding-right:20px;">{{{$t->name}}}</span>
-                                            <i class="icon-plus"></i>
-                                            <i class="icon-pencil"></i>
-                                            <i class="icon-trash"></i>
+                                            <a class="JsPlus"><i class="icon-plus"></i></a>
+                                            <a class="JsPencil"><i class="icon-pencil"></i></a>
+                                            <a class="JsTrash"><i class="icon-trash"></i></a>
                                         </div>
                                         @if(count($t->children))
                                         <ol class="dd-list">
@@ -118,8 +118,8 @@
                                             <li class="dd-item">
                                                 <div class="dd-handle" style="cursor:default;" data-url="{{{$child->url}}}" data-key="{{{$child->key}}}"  data-parent="{{{$child->parent_id}}}" data-type="{{{$child->type}}}" data-category="{{{$child->category}}}"  data-name="{{{$child->name}}}" data-id="{{{$child->id}}}">
                                                     <span style="padding-right:20px;">{{{$child->name}}}</span>
-                                                    <i class="icon-pencil"></i>
-                                                    <i class="icon-trash"></i>
+                                                    <a class="JsPencil"><i class="icon-pencil"></i></a>
+                                                    <a class="JsTrash"><i class="icon-trash"></i></a>
                                                 </div>
                                             </li>
                                             @endforeach
@@ -154,13 +154,13 @@
         $(function() {
             App.init();
             //新增一个二级菜单
-            $(".icon-plus").on('click', function() {
+            $(".JsPlus").on('click', function() {
                 var $parent = $(this).parent();
                 var id = $parent.attr('data-id');
                 $("#parentId option[value="+id+"]").attr("selected","selected");
             });
             //编辑一个菜单
-            $(".icon-pencil").on('click', function() {
+            $(".JsPencil").on('click', function() {
                 var $parent = $(this).parent();
                 var id = $parent.attr('data-id');
                 var name = $parent.attr('data-name');
@@ -182,7 +182,7 @@
             });
 
             //删除一个菜单
-            $(".icon-trash").on('click', function(e) {
+            $(".JsTrash").on('click', function(e) {
                 var sibling = $(this).siblings(".jsCollapse");
                 if(sibling.length > 0) {
                     if(! confirm("删除该菜单，则该菜单下的子菜单也会删除，确定要删除？")){
@@ -229,9 +229,14 @@
             //新增/更新菜单
             $("#btnOpt").on('click', function() {
                 var id = $("#menuId").val();
+                var parentId = $("#parentId").val();
+                if(id == parentId) {
+                    alert('不能选择自己为父级菜单');
+                    return false;
+                }
                 var type = $("#type").val();
                 var data = "id="+id;
-                data += "&parentId="+$("#parentId").val();
+                data += "&parentId="+parentId;
                 data +="&name="+$("#name").val();
                 data +="&type="+type;
                 var key = $("#key").val();

@@ -70,15 +70,15 @@
       <file leaf-file-name="weixinmenu.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/content/weixinmenu.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3898305" vertical-offset="5976" max-vertical-offset="7452">
-              <caret line="229" column="22" selection-start-line="229" selection-start-column="22" selection-end-line="229" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.4915254" vertical-offset="6057" max-vertical-offset="7587">
+              <caret line="234" column="33" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
               <folding>
                 <element signature="e#977#1005#0#HTML" expanded="true" />
                 <element signature="e#6598#6621#0#HTML" expanded="true" />
                 <element signature="e#7086#7113#0#HTML" expanded="true" />
-                <element signature="e#7735#7758#0#HTML" expanded="true" />
-                <element signature="e#8044#8071#0#HTML" expanded="true" />
-                <element signature="e#8796#8817#0#HTML" expanded="true" />
+                <element signature="e#7804#7827#0#HTML" expanded="true" />
+                <element signature="e#8113#8140#0#HTML" expanded="true" />
+                <element signature="e#8912#8933#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -827,15 +827,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/content/weixinmenu.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3898305" vertical-offset="5976" max-vertical-offset="7452">
-          <caret line="229" column="22" selection-start-line="229" selection-start-column="22" selection-end-line="229" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.4915254" vertical-offset="6057" max-vertical-offset="7587">
+          <caret line="234" column="33" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
           <folding>
             <element signature="e#977#1005#0#HTML" expanded="true" />
             <element signature="e#6598#6621#0#HTML" expanded="true" />
             <element signature="e#7086#7113#0#HTML" expanded="true" />
-            <element signature="e#7735#7758#0#HTML" expanded="true" />
-            <element signature="e#8044#8071#0#HTML" expanded="true" />
-            <element signature="e#8796#8817#0#HTML" expanded="true" />
+            <element signature="e#7804#7827#0#HTML" expanded="true" />
+            <element signature="e#8113#8140#0#HTML" expanded="true" />
+            <element signature="e#8912#8933#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
