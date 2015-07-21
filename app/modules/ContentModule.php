@@ -10,7 +10,11 @@ use App\Model\Content;
 class ContentModule extends BaseModule {
     const CATEGORY_HELP = 1; //帮助类型
     const CATEGORY_NEWS = 2; //新闻类型
+    const CATEGORY_WEIXIN = 3; //微信类型
     const COMPANY_BRIEF = 1; //公司简介类型，不能删除
+    const TYPE_SINGLE = 1; //微信：单条图文
+    const TYPE_MULTI = 2; //微信：多条图文
+    const TYPE_CUSTOM = 3; //微信：自定义图文
     /**
      * 添加一个内容
      *
@@ -23,10 +27,14 @@ class ContentModule extends BaseModule {
      * @param $type category为1时，对应content_type表里面的类型，category为2时，1为首页，2为旅游 3为ETC
      * @param $startTime
      * @param $endTime
+     * @param $sort
      * @param $category 大分类，1为帮助， 2为新闻公告
+     * @param int $parentId  微信素材多条图文父图文id
+     * @param string $url   微信素材链接地址
+     * @param string $picture 微信素材封面图
      * @return array
      */
-    public static function addContent($title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime,$sort, $category) {
+    public static function addContent($title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime,$sort, $category, $parentId = 0, $url = '', $picture = '') {
         $content = new Content();
         $content->title = $title;
         $content->brief = $brief;
@@ -39,6 +47,9 @@ class ContentModule extends BaseModule {
         $content->end_time = $endTime;
         $content->category = $category;
         $content->sort = $sort;
+        $content->parent_id = $parentId;
+        $content->url = $url;
+        $content->cover = $picture;
         $content->save();
         return array('status' => true, 'id' => $content->id);
     }
@@ -59,6 +70,29 @@ class ContentModule extends BaseModule {
     }
 
     /**
+     * 删除一个微信素材
+     *
+     * @param $id
+     * @param $type 0则删除整个多条图文，1则只删除具体某个图文
+     * @return array
+     */
+    public static function deleteWeixinSource($id, $type = 0) {
+        $content = Content::find($id);
+        if(empty($content)) {
+            return array('status' => false, 'id' => 'error_id_not_exist');
+        }
+
+        $content = new Content();
+        $content = $content->where('id', $id);
+        if(! $type) {
+            $content = $content->orWhere('parent_id', $id);
+        }
+        $content->delete();
+
+        return array('status' => true);
+    }
+
+    /**
      * 更新一个内容
      *
      * @param $id
@@ -72,9 +106,12 @@ class ContentModule extends BaseModule {
      * @param $startTime
      * @param $endTime
      * @param $category 大分类，1为帮助， 2为新闻公告
+     * @param int $parentId  微信素材多条图文父图文id
+     * @param string $url   微信素材链接地址
+     * @param string $picture 微信素材封面图
      * @return array
      */
-    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category) {
+    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category, $parentId = 0, $url = '', $picture = '') {
         $content = Content::find($id);
         if(empty($content)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
@@ -89,6 +126,9 @@ class ContentModule extends BaseModule {
         $content->start_time = $startTime;
         $content->end_time = $endTime;
         $content->category = $category;
+        $content->parent_id = $parentId;
+        $content->url = $url;
+        $content->cover = $picture;
         $content->save();
 
         return array('status' => true, 'id' => $content->id);
@@ -115,6 +155,10 @@ class ContentModule extends BaseModule {
             $content = $content->where('title', 'like', "%$title%");
         }
         $content = $content->where('category', $category);
+        if($category == self::CATEGORY_WEIXIN) {
+            $content = $content->where('parent_id', 0);
+        }
+
         if($type) {
             $content = $content->where('type', $type);
         }
@@ -149,6 +193,10 @@ class ContentModule extends BaseModule {
             $content = $content->where('title', 'like', "%$title%");
         }
         $content = $content->where('category', $category);
+        if($category == self::CATEGORY_WEIXIN) {
+            $content = $content->where('parent_id', 0);
+        }
+
         if($type) {
             $content = $content->where('type', $type)->where('category', $category);
         }
@@ -170,5 +218,15 @@ class ContentModule extends BaseModule {
      */
     public static function getContentById($id) {
         return Content::find($id);
+    }
+
+    /**
+     * 获取多条图文素材
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function getMultiSourceById($id) {
+        return Content::where('id', $id)->orWhere('parent_id', $id)->get();
     }
 }

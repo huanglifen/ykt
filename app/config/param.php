@@ -12,7 +12,7 @@ return array(
         'partner_id'   => '',
         'partner_key'  => '',
         'sign_type'    => 'SHA1',
-        'token_access_url' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',
+        'weixin_url' => 'https://api.weixin.qq.com/cgi-bin/'
     ),
     'merchant' => array(
         'api_url'      => 'http://192.192.219.186:9999',

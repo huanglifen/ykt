@@ -16,4 +16,6 @@ return array(
     'The editor field is required.' => '请输入内容',
     'error_endTime_cannot_less_than_startTime' => '结束时间不能早于开始时间',
     'error_over_max_number' => '一级菜单不能多于3个，每个菜单下的二级菜单不能多于5个',
+    'error_net_error' => '网络错误',
+    'The title field is required.' => '请输入标题'
 );

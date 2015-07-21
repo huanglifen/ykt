@@ -31,9 +31,25 @@ class WeixinApi {
     public function getTokenAccess() {
         $appId = \Config::get('param.weixin.app_id');
         $secret = \Config::get('param.weixin.app_secret');
-        $accessUrl = \Config::get('param.weixin.token_access_url');
+        $url = \Config::get('param.weixin.weixin_url');
+        $accessUrl = $url . "token?grant_type=client_credential";
         $accessUrl .="&appid=$appId&secret=$secret";
         $result = HttpClient::quickGet($accessUrl);
+        return $result;
+    }
+
+    /**
+     * 更新菜单到微信
+     *
+     * @param $menus
+     * @return mixed
+     */
+    public function syncMenu($menus) {
+        $accessToken = $this->getTokenAccess();
+
+        $url = \Config::get('param.weixin.weixin_url');
+        $url = $url . "menu/create?access_token=" . $accessToken;
+        $result        = HttpClient::quickPost($url, $menus);
         return $result;
     }
 }

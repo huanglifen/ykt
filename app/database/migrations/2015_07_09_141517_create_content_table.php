@@ -19,9 +19,12 @@ class CreateContentTable extends Migration {
 	{
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
+            $table->integer("parent_id"); //微信多条图文时，其他图文的parent_id需要填默认图文的id
             $table->string('title', 150);
+            $table->string("url", 200); //微信链接
             $table->string('brief', 1000); //内容简介
             $table->text('content');
+            $table->string("cover", 150); //微信封面
             $table->tinyInteger("display"); //是否显示 1 显示 2不显示
             $table->string('source', 100);
             $table->tinyInteger('sort');

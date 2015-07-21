@@ -36,8 +36,6 @@ class HttpClient {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         $responseText = curl_exec($curl);
         curl_close($curl);
-        //$error = curl_error($curl);
-        //var_dump( $error );exit;
         return $responseText;
     }
 }

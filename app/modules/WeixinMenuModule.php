@@ -1,5 +1,6 @@
 <?php namespace App\Module;
 
+use App\Model\WeixinApi;
 use App\Model\WeixinMenu;
 
 /**
@@ -126,7 +127,7 @@ class WeixinMenuModule extends BaseModule {
                 $arr = array();
                 $arr['name'] = $menu->name;
                 foreach($menu->children as $child) {
-                    $arr['sub_button'] = self::getMenuKey($child);
+                    $arr['sub_button'][] = self::getMenuKey($child);
                 }
             }else{
                 $arr = self::getMenuKey($menu);
@@ -135,6 +136,27 @@ class WeixinMenuModule extends BaseModule {
         }
         $result['button'] = $data;
         return  $result;
+    }
+
+    /**
+     * 更新菜单到微信
+     *
+     * @return mixed
+     */
+    public static function syncMenu() {
+        $menus = self::getMenus();
+        $menus = urldecode(json_encode(self::getJsonMenu($menus)));
+
+        $api = new WeixinApi();
+        $result = $api->syncMenu($menus);
+        $result = json_decode($result, true);
+
+        if(isset($result['errorCode']) && $result['errorCode'] == 0) {
+            return array('status' => true);
+        }else{
+            $msg = isset($result['errmsg']) ? $result['errmsg'] : 'error_net_error';
+            return array('status' => false, 'msg' => $msg);
+        }
     }
 
     /**

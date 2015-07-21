@@ -230,7 +230,7 @@
             $("#btnOpt").on('click', function() {
                 var id = $("#menuId").val();
                 var parentId = $("#parentId").val();
-                if(id == parentId) {
+                if(id == parentId && id > 0) {
                     alert('不能选择自己为父级菜单');
                     return false;
                 }
@@ -248,6 +248,25 @@
                 data +="&category="+$("#category").val();
 
                 editMenu(data, 'wmenu/menu');
+            });
+
+            //同步菜单到微信
+            $("#btnSysc").on('click', function() {
+                $.ajax({
+                    'data' : '',
+                    'dataType' : 'json',
+                    'type' : 'post',
+                    'url' : baseURL + 'wmenu/sync',
+                    'success' : function(json) {
+                        Common.checkLogin(json);
+                        if(json.status == 0) {
+                            alert('更新成功');
+                            window.location.reload();
+                        }else{
+                            alert('更新失败')
+                        }
+                    }
+                })
             });
         });
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
  * @package App\Controllers
  */
 class WeixinMenuController extends BaseController {
+    public $langFile = 'content';
 
     /**
      * 显示微信菜单列表页面
@@ -70,7 +71,16 @@ class WeixinMenuController extends BaseController {
         return $this->outputContent($result);
     }
 
-    public function postSysnc() {
+    /**
+     * 更新菜单到微信请求
+     *
+     * @return string
+     */
+    public function postSync() {
+        $this->outputUserNotLogin();
 
+        $result = WeixinMenuModule::syncMenu();
+        $this->outputErrorIfFail($result);
+        return $this->outputContent($result);
     }
 }
