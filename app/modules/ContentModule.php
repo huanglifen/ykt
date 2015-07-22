@@ -70,6 +70,17 @@ class ContentModule extends BaseModule {
     }
 
     /**
+     * 批量删除
+     *
+     * @param $ids
+     * @return array
+     */
+    public static function deleteMulti($ids) {
+        Content::destroy($ids);
+        return array('status' => true);
+    }
+
+    /**
      * 删除一个微信素材
      *
      * @param $id
@@ -109,9 +120,10 @@ class ContentModule extends BaseModule {
      * @param int $parentId  微信素材多条图文父图文id
      * @param string $url   微信素材链接地址
      * @param string $picture 微信素材封面图
+     * @param int $sort
      * @return array
      */
-    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category, $parentId = 0, $url = '', $picture = '') {
+    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category, $parentId = 0, $url = '', $picture = '', $sort = 0) {
         $content = Content::find($id);
         if(empty($content)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
@@ -129,6 +141,7 @@ class ContentModule extends BaseModule {
         $content->parent_id = $parentId;
         $content->url = $url;
         $content->cover = $picture;
+        $content->sort = $sort;
         $content->save();
 
         return array('status' => true, 'id' => $content->id);
@@ -227,6 +240,6 @@ class ContentModule extends BaseModule {
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public static function getMultiSourceById($id) {
-        return Content::where('id', $id)->orWhere('parent_id', $id)->get();
+        return Content::Where('parent_id', $id)->get();
     }
 }

@@ -59,6 +59,11 @@ class WeixinSourceController extends BaseController {
         if(! $this->isLogin()) {
             return Redirect::to('/login');
         }
+
+        if(! in_array($type, array(ContentModule::TYPE_CUSTOM, ContentModule::TYPE_SINGLE, ContentModule::TYPE_MULTI))) {
+            $type = ContentModule::TYPE_CUSTOM;
+        }
+
         $view = $this->viewArr[$type];
         $this->data = compact('type');
         return $this->showView('content.weixinsource-' . $view . "-add");
@@ -95,6 +100,40 @@ class WeixinSourceController extends BaseController {
         return $this->outputContent($result);
     }
 
+    /**
+     * 新增多条图文请求
+     *
+     * @return string
+     */
+    public function postMultiAdd() {
+        $this->outputUserNotLogin();
+
+        $source = $this->getParam('source', 'required');
+        $this->outputErrorIfExist();
+
+        $source = json_decode($source, true);
+        $type = ContentModule::TYPE_MULTI;
+        $category = ContentModule::CATEGORY_WEIXIN;
+
+        $result = ContentModule::addContent($source[0]['title'], '', $source[0]['content'], 1, '', '', $type, 0, 0, 0, $category, 0, $source[0]['url'], $source[0]['pic']);
+        $parentId = $result['id'];
+        unset($source[0]);
+
+        foreach($source as $s) {
+            $result = ContentModule::addContent($s['title'], '', $s['content'], 1, '', '', $type, 0, 0, 0, $category, $parentId, $s['url'], $s['pic']);
+            if($result['status'] == false) {
+                $this->outputErrorIfFail($result);
+            }
+        }
+        return $this->outputContent($result);
+    }
+
+    /**
+     * 显示更新页面
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function getUpdate($id = 0) {
         if(! $this->isLogin()) {
             return Redirect::to('/login');
@@ -106,16 +145,18 @@ class WeixinSourceController extends BaseController {
         if(empty($source)) {
             return Redirect::to("/wsource/index");
         }
+
         if($source->type == ContentModule::TYPE_MULTI) {
-            $source = ContentModule::getMultiSourceById($id);
+            $source->child = ContentModule::getMultiSourceById($id);
         }
+
         $type = $source->type;
         if(! in_array($type, array(ContentModule::TYPE_CUSTOM, ContentModule::TYPE_SINGLE, ContentModule::TYPE_MULTI))) {
             $type = ContentModule::TYPE_CUSTOM;
         }
 
         $this->data = compact('source', 'id', 'type');
-        $view = $this->viewArr[$source->type];
+        $view = $this->viewArr[$type];
         return $this->showView('content.weixinsource-' . $view . "-update");
     }
 
@@ -145,6 +186,55 @@ class WeixinSourceController extends BaseController {
         $result = ContentModule::updateContent($id, $title, $brief, $context, 1, '', '', $type, 0, 0, $category, $parentId, $url, $cover);
         $this->outputErrorIfFail($result);
 
+        return $this->outputContent($result);
+    }
+
+    /**
+     * 更新一个多条图文素材请求
+     *
+     * @return string
+     */
+    public function postMultiUpdate() {
+        $this->outputUserNotLogin();
+
+        $source = $this->getParam('source', 'required');
+        $this->outputErrorIfExist();
+
+        $source = json_decode($source, true);
+        $type = ContentModule::TYPE_MULTI;
+        $category = ContentModule::CATEGORY_WEIXIN;
+
+        $result = ContentModule::updateContent($source[0]['id'], $source[0]['title'], '', $source[0]['content'], 1, '', '', $type, 0, 0, $category, 0, $source[0]['url'], $source[0]['pic']);
+        $parentId = $source[0]['id'];
+        unset($source[0]);
+
+        $children = ContentModule::getMultiSourceById($parentId);
+        $ids = array();
+        $sourceIds = array();
+        foreach($children as $child) {
+            $ids[] = $child->id;
+        }
+        foreach($source as $s) {
+            if($s['id'] != 0) {
+                $sourceIds[] = $s['id'];
+            }
+        }
+        $deleteIds = array_diff($ids, $sourceIds);
+        ContentModule::deleteMulti($deleteIds);
+
+        foreach($source as $s) {
+            if($s['id'] == 0) {
+                $result = ContentModule::addContent($s['title'], '', $s['content'], 1, '', '', $type, 0, 0, 0, $category, $parentId, $s['url'], $s['pic']);
+                if($result['status'] == false) {
+                    $this->outputErrorIfFail($result);
+                }
+            }else{
+                $result = ContentModule::updateContent($s['id'], $s['title'], '', $s['content'], 1, '', '', $type, 0, 0,$category, $parentId, $s['url'], $s['pic']);
+                if($result['status'] == false) {
+                    $this->outputErrorIfFail($result);
+                }
+            }
+        }
         return $this->outputContent($result);
     }
 

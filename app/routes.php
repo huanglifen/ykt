@@ -40,4 +40,5 @@ Route::controller("carousel", "App\Controllers\CarouselController");//轮播图
 Route::controller('weichat', "App\Controllers\WeichatController"); //微信接收消息服接口
 Route::controller('wmenu', "App\Controllers\WeixinMenuController");
 Route::controller('wsource', "App\Controllers\WeixinSourceController");
+Route::controller('site', "App\Controllers\SiteController");
 
