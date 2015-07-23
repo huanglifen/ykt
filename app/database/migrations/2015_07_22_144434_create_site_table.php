@@ -16,11 +16,12 @@ class CreateSiteTable extends Migration {
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->tinyInteger('type');
-            $table->integer("number");
-            $table->string("name", 30);
+            $table->string("number", 50);
+            $table->string("name", 100);
             $table->string("contactor", 100 );
             $table->string("tel", 30);
             $table->string('address', 100);
+            $table->integer('area_id');
             $table->integer('start_time');
             $table->integer('end_time');
             $table->string('picture', 100);

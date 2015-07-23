@@ -17,4 +17,8 @@ class AreaModule extends BaseModule {
         return $city;
     }
 
+    public static function getAreaById($id) {
+        return Area::find($id);
+    }
+
 }
