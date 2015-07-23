@@ -242,4 +242,28 @@ class ContentModule extends BaseModule {
     public static function getMultiSourceById($id) {
         return Content::Where('parent_id', $id)->get();
     }
+
+    /**
+     * 按图文类型分类素材
+     *
+     * @param $source
+     * @return array
+     */
+    public static function formatWeixinSourceByType($source) {
+        $result = array('single' => array(), 'multi' => array(), 'custom' => array());
+        foreach($source as $s) {
+            switch($s->type) {
+                case self::TYPE_SINGLE :
+                    $result['single'][] = $s;
+                    break;
+                case self::TYPE_MULTI :
+                    $result['multi'][] = $s;
+                    break;
+                case self::TYPE_CUSTOM :
+                    $result['custom'][] = $s;
+                    break;
+            }
+        }
+        return $result;
+    }
 }

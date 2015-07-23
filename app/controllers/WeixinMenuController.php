@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 
+use App\Module\ContentModule;
 use App\Module\WeixinMenuModule;
 use App\Module\WeixinSourceModule;
 use Illuminate\Support\Facades\Redirect;
@@ -24,8 +25,8 @@ class WeixinMenuController extends BaseController {
         $tree = WeixinMenuModule::getMenus();
         $json = json_encode(WeixinMenuModule::getJsonMenu($tree));
 
-        $sources = WeixinSourceModule::getSource();
-        $sources = WeixinSourceModule::formatSourceByCategory($sources);
+        $sources = ContentModule::getContent('', 0, 0, 0, 0, 0, ContentModule::CATEGORY_WEIXIN);
+        $sources = ContentModule::formatWeixinSourceByType($sources);
 
         $this->data = compact('tree', 'json', 'sources');
         return $this->showView('content.weixinmenu');
