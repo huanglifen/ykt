@@ -44,6 +44,8 @@ Route::controller('site', "App\Controllers\SiteController");
 Route::controller('web', "App\Controllers\WebController");
 Route::controller('partner', "App\Controllers\PartnerController");
 Route::controller('cs', "App\Controllers\CustomerServiceController");
+Route::controller('dump', "App\Controllers\DumpController");
+Route::controller('app', "App\Controllers\AppController");
 
 
 

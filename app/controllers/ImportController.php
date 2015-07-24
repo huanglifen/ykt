@@ -81,5 +81,4 @@ class ImportController extends BaseController{
         $fileNewPath = $this->destination  . $fileNewName;
         return $this->outputContent($fileNewPath);
     }
-
 }
