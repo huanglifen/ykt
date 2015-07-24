@@ -9,5 +9,7 @@ return array(
     'The address may not be greater than 100 characters.' => '地址长度不能超过100个字符',
     'The remark may not be greater than 150 characters.' => '备注长度不能超过150个字符',
     'The tel may not be greater than 30 characters.' => '电话长度不能超过30个字符',
-
+    'The sort may not be greater than 99.' => '排序值介于0~99',
+    'The sort must be at least 0.' => '排序值介于0~99',
+    'The sort must be a number.' => '排序值必须是数字'
 );

@@ -41,4 +41,9 @@ Route::controller('weichat', "App\Controllers\WeichatController"); //微信接�
 Route::controller('wmenu', "App\Controllers\WeixinMenuController");
 Route::controller('wsource', "App\Controllers\WeixinSourceController");
 Route::controller('site', "App\Controllers\SiteController");
+Route::controller('web', "App\Controllers\WebController");
+Route::controller('partner', "App\Controllers\PartnerController");
+Route::controller('cs', "App\Controllers\CustomerServiceController");
+
+
 
