@@ -11,5 +11,11 @@ return array(
     'The tel may not be greater than 30 characters.' => '电话长度不能超过30个字符',
     'The sort may not be greater than 99.' => '排序值介于0~99',
     'The sort must be at least 0.' => '排序值介于0~99',
-    'The sort must be a number.' => '排序值必须是数字'
+    'The sort must be a number.' => '排序值必须是数字',
+    'error_file_type' => '请上传APK格式的文件',
+    'error_file_too_large' => '软件大小不能超过500M',
+    'error_file_not_exist' => '文件上传出错',
+    'error_dump_fail' => '备份失败',
+    'error_cannot_find_dump' => '找不到备份文件，请先备份！',
+    'error_recovery_fail' => '数据备份失败！',
 );

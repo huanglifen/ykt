@@ -1,10 +1,11 @@
 <?php namespace App\Controllers;
 
-use App\Module\WebModule;
+use App\Module\AppModule;
 use App\Utils\Utils;
 
 class AppController extends BaseController {
     public $app = 'app/';
+    protected $langFile = 'setting';
 
     /**
      * 显示app页面
@@ -16,7 +17,7 @@ class AppController extends BaseController {
             return $this->showView('/login');
         }
 
-        $this->data['appPath'] = WebModule::getAppPath();
+        $this->data['app'] = AppModule::getApp();
         return $this->showView('setting.app');
     }
 
@@ -55,7 +56,27 @@ class AppController extends BaseController {
         $file->move($this->app, $fileNewName);
         $fileNewPath = $this->app  . $fileNewName;
 
-        WebModule::updateAppPath($fileNewPath);
         return $this->outputContent($fileNewPath);
+    }
+
+    /**
+     * 设置APP上传信息
+     *
+     * @return string
+     */
+    public function postAdd() {
+        $this->outputUserNotLogin();
+
+        $path = $this->getParam('path', 'required');
+        $version = $this->getParam('version');
+        $remark = $this->getParam('remark');
+        $url = $this->getParam('url');
+        $share = $this->getParam('share');
+
+        $this->outputErrorIfExist();
+
+        $result = AppModule::setAppInfo($path, $version, $remark, $url, $share);
+        $this->outputErrorIfFail($result);
+        return $this->outputContent($result);
     }
 }

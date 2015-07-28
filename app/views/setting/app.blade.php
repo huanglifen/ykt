@@ -13,43 +13,85 @@
         $breadTitle = "站点管理";
         $breadcrumb = array(
                 array("站点管理"),
-                array("数据备份", $baseURL . '/app/index'));
+                array("APP发布", $baseURL . '/app/index'));
         ?>
         @include('common.bread')
         <!-- BEGIN PAGE CONTENT-->
         <div class="row-fluid">
             <div class="span12">
-                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet box">
-                    <div class="portlet-body">
-                        <div class="clearfix">
-                            <form id="jsFileUpload" name="fileUpload" enctype="multipart/form-data">
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <div class="input-append">
-                                                <div class="uneditable-input">
-                                                    <i class="icon-file fileupload-exists"></i>
-                                                    <span class="fileupload-preview"></span>
-                                                </div>
+                <div class="portlet box blue">
+                    <div class="portlet-body form">
+                        <div id="addProductForm" action="#" class="form-horizontal">
+                            <div class="row-fluid">
+                                <div class="span10 ">
+                                    <form id="jsFileUpload" name="fileUpload" enctype="multipart/form-data">
+                                        <div class="control-group">
+                                            <label class="control-label">上传APP</label>
+                                            <div class="controls">
+                                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                    <div class="input-append">
+                                                        <div class="uneditable-input">
+                                                            <i class="icon-file fileupload-exists"></i>
+                                                            <span class="fileupload-preview"></span>
+                                                        </div>
 													<span class="btn btn-file">
 													<span class="fileupload-new">选择APP</span>
 													<span class="fileupload-exists">修改选择</span>
 													<input type="file" class="default" name="file" />
 													</span>
-                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">重置</a>
-                                                <a href="javascript:;" id="jsImport" class="btn green margin-right-10">
-                                                    <i class="icon-upload"></i>开始导入
-                                                </a>
+                                                        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">重置</a>
+                                                        <a href="javascript:;" id="jsImport" class="btn green margin-right-10">
+                                                            <i class="icon-upload"></i>开始导入
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                @if($app->path != '')
+                                                    <div class="alert alert-success" id="JsPath" >当前路径： {{{$app->path or ''}}}</div>
+                                                @else
+                                                    <div  id="JsPath" class="alert">您还未上传APP</div>
+                                                @endif
                                             </div>
                                         </div>
-                                    </div>
+                                        <input type="hidden" id="path" name="path" value="{{{$app->url or ''}}}"
+                                               class="span6 m-wrap popovers" data-trigger="hover"/>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">备注</label>
+                                <div class="controls">
+                                    <input type="text" id="remark" name="remark" value="{{{$app->remark or ''}}}"
+                                           class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">版本</label>
+                                <div class="controls">
+                                    <input type="text" id="version" name="version" value="{{{$app->version or ''}}}"
+                                           class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">下载链接</label>
+                                <div class="controls">
+                                    <input type="text" id="appUrl" name="appUrl" value="{{{$app->url or ''}}}"
+                                           class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">分享项</label>
+                                <div class="controls">
+                                    <input type="text" id="share" name="share" value="{{{$app->share or ''}}}"
+                                           class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" id="JsSaveBtn" class="btn blue">保存</button>
+                                <button type="button" class="btn" id="clearForm">清空</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
         <!-- END PAGE CONTENT-->
@@ -67,6 +109,7 @@
     <script>
         $(function () {
             App.init();
+            //上传APP
             $("#jsImport").on('click', function() {
                 if(! $("input[name=file]").val()) {
                     alert('请选择要上传的APP');
@@ -81,11 +124,39 @@
                         if(json.status != 0) {
                             alert(json.result);
                         }else{
-                            alert('上传成功!');
+                            $("#JsPath").addClass("alert-success").text("当前APP路径：" + json.result);
+                            $("#path").val(json.result);
                         }
                     }
                 };
                 form.ajaxSubmit(options);
+            });
+
+            $("#JsSaveBtn").on('click', function() {
+                var data = "path=" + $("#path").val();
+                data += "&remark=" + $("#remark").val();
+                data += "&version=" + $("#version").val();
+                data += "&url=" + $("#appUrl").val();
+                data += "&share=" + $("#share").val();
+                $.ajax({
+                    'dataType' : 'json',
+                    'type' : 'post',
+                    'data' : data,
+                    'url' : baseURL + "app/add",
+                    'success' : function(d) {
+                        if(d.status == 0) {
+                            alert('发布成功！');
+                        }else{
+                            if(d.status == 1001) {
+                                Common.checkError(d);
+                            }else if(d.status == 1000) {
+                                alert(d.result);
+                            }else{
+                                alert('发布失败，请重试！');
+                            }
+                        }
+                    }
+                });
             });
         });
     </script>

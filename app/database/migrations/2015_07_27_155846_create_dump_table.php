@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAppTable extends Migration {
-    protected $tableName = "app";
+class CreateDumpTable extends Migration {
+    protected $tableName = "dump";
 
 	/**
 	 * Run the migrations.
@@ -15,11 +15,8 @@ class CreateAppTable extends Migration {
 	{
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
-            $table->string('path', 100);
-            $table->string('remark', 200);
-            $table->string('version', 100);
-            $table->string('url', 100);
-            $table->string('share', 200);
+            $table->string("path", 100); //备份文件路径
+            $table->string("size", 100); //文件大小
             $table->timestamps();
         });
 	}
