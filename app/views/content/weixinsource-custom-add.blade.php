@@ -8,7 +8,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "添加素材";
         $breadcrumb[] = array("内容管理");
         $breadcrumb[] = array("微信素材", $baseURL . '/wsource/index');
         $breadcrumb[] = array("添加素材", $baseURL ."/wsource/add/".$type);

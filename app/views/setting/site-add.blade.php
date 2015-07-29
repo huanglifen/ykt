@@ -17,7 +17,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "网点管理";
+        $breadTitle = "新增网点";
         $breadcrumb = array(
                 array("网点管理"),
                 array("网点设置", $baseURL . '/site/index'),

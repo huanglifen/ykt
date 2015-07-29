@@ -10,7 +10,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "微信素材管理";
         $breadcrumb[] = array("内容管理");
         $breadcrumb[] = array("微信素材管理", $baseURL . '/wsource/index');
         ?>

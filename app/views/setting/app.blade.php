@@ -10,7 +10,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "站点管理";
+        $breadTitle = "APP发布";
         $breadcrumb = array(
                 array("站点管理"),
                 array("APP发布", $baseURL . '/app/index'));

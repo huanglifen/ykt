@@ -8,7 +8,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "站点管理";
+        $breadTitle = "修改合作网站";
         $breadcrumb = array(
                 array("站点管理"),
                 array("合作网站", $baseURL . '/partner/index'),

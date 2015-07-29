@@ -12,7 +12,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "编辑内容";
         $breadcrumb[] = array("内容管理");
         if($type != \App\Module\ContentModule::COMPANY_BRIEF) {
             $breadcrumb[] = array("帮助信息", $baseURL . '/help/index');

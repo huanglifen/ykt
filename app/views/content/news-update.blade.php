@@ -12,7 +12,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "编辑内容";
         $breadcrumb[] = array("内容管理");
         $breadcrumb[] = array("新闻公告", $baseURL . '/news/index');
         $breadcrumb[] = array("编辑内容", $baseURL ."/news/update/".$id);

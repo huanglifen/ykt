@@ -9,7 +9,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "内容类型管理";
         $breadcrumb = array(
                 array("内容管理"),
                 array("内容类型管理", $baseURL . '/contentType/index'));

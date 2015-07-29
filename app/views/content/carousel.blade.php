@@ -9,7 +9,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "ETC和旅游页广告";
         $breadcrumb = array(
                 array("内容管理"),
                 array("ETC和旅游页广告", $baseURL . '/carousel/index/0'));

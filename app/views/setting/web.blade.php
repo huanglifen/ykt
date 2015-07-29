@@ -8,7 +8,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "站点管理";
+        $breadTitle = "站点信息";
         $breadcrumb = array(
                 array("站点管理"),
                 array("站点信息", $baseURL . '/web/index')

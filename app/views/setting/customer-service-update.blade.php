@@ -7,7 +7,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "站点管理";
+        $breadTitle = "修改客服";
         $breadcrumb = array(
                 array("站点管理"),
                 array("客服管理", $baseURL . '/cs/index'),

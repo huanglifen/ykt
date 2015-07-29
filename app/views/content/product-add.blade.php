@@ -8,7 +8,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "新增卡产品";
         $breadcrumb = array(
                 array("内容管理"),
                 array("卡产品介绍管理", $baseURL . '/product/index'),

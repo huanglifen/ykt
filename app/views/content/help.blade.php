@@ -14,12 +14,13 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
         $breadcrumb[] = array("内容管理");
             if($type != \App\Module\ContentModule::COMPANY_BRIEF) {
                 $breadcrumb[] = array("帮助信息", $baseURL . '/help/index');
+                $breadTitle = "帮助信息";
             }else{
                 $breadcrumb[] = array("公司简介", $baseURL . '/help/index/'.\App\Module\ContentModule::COMPANY_BRIEF);
+                $breadTitle = "公司简介";
             }
         ?>
         @include('common.bread')

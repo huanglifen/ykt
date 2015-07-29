@@ -14,7 +14,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "新闻公告";
         $breadcrumb[] = array("内容管理");
         $breadcrumb[] = array("新闻公告", $baseURL . '/news/index');
         ?>

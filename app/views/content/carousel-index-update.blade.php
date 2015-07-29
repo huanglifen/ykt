@@ -8,7 +8,7 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "内容管理";
+        $breadTitle = "编辑首页轮播广告";
         $breadcrumb = array(
                 array("内容管理"),
                 array("首页轮播广告", $baseURL . '/carousel/index/'.\App\Module\CarouselModule::TYPE_INDEX),
