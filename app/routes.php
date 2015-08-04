@@ -47,7 +47,7 @@ Route::controller('cs', "App\Controllers\CustomerServiceController");
 Route::controller('dump', "App\Controllers\DumpController");
 Route::controller('app', "App\Controllers\AppController");
 Route::controller('paySet', "App\Controllers\PaySetController");//生活缴费业务设置
-Route::controller('pay', "App\Controllers\PayController");//生活缴费
+Route::controller('payment', "App\Controllers\PaymentController");//生活缴费
 
 
 

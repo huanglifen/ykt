@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreatePayTable extends Migration {
-    protected $tableName = "pay";
+    protected $tableName = "payment";
 
 	/**
 	 * Run the migrations.
@@ -15,11 +15,11 @@ class CreatePayTable extends Migration {
 	{
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
-            $table->integer("number");
+            $table->string("serial_number", 50); //流水号
             $table->tinyInteger("category"); //缴费类型
             $table->integer("business"); //缴费商户
             $table->integer("account"); //缴费账号
-            $table->string("order_no"); //缴费流水号
+            $table->string("order_no", 50); //缴费订单编号
             $table->integer("uid"); //客户id
             $table->integer("pay_type"); //支付方式
             $table->integer("pay_account"); //支付账号

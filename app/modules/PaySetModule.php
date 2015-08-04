@@ -7,9 +7,21 @@ class PaySetModule extends BaseModule {
     const CATEGORY_GAS = 2; //燃气
     const CATEGORY_INSURANCE = 3; //保险
     const CATEGORY_TV = 4; //有线电视
+    const CATEGORY_YKT = 5; //一卡通充值
     const TYPE_MOBILE = 1; //移动
     const TYPE_UNICOM = 2; //联通
     const TYPE_TELECOM = 3; //电信
+    const TYPE_INSURANCE = 4; //保险公司
+    const TYPE_GAS = 5; //燃气公司
+    const TYPE_TV = 6; //有线电视
+    public static $typeArr = array(
+        self::TYPE_MOBILE => '中国移动',
+        self::TYPE_UNICOM => '中国联通',
+        self::TYPE_TELECOM => '中国电信',
+        self::TYPE_INSURANCE => '保险公司',
+        self::TYPE_TV => '有线电视',
+        self::TYPE_GAS => '燃气公司'
+    );
 
     /**
      * 更新业务设置状态

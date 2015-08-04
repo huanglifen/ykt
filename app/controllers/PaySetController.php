@@ -15,7 +15,7 @@ class PaySetController extends BaseController {
         PaySetModule::CATEGORY_MOBILE => 'mobile',
         PaySetModule::CATEGORY_GAS => 'gas',
         PaySetModule::CATEGORY_INSURANCE => 'insurance',
-        PaySetModule::CATEGORY_TV => 'tv'
+        PaySetModule::CATEGORY_TV => 'tv',
     );
 
     /**
@@ -39,8 +39,12 @@ class PaySetController extends BaseController {
             $paySet = PaySetModule::getPaySetting($category);
             $this->data = compact("cardType", 'paySet');
         }
-        $view = $this->viewArr[$category];
-        return $this->showView("pay.$view");
+        if($category == PaySetModule::CATEGORY_YKT) {
+            return $this->showView('recharge.mount-control');
+        } else {
+            $view = $this->viewArr[$category];
+            return $this->showView("pay.$view");
+        }
     }
 
     /**
