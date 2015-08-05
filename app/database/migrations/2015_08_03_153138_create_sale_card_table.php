@@ -15,7 +15,7 @@ class CreateSaleCardTable extends Migration {
 	{
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
-            $table->string("order_id", 30);
+            $table->string("order_no", 30);
             $table->string("cardno", 100); //加密后的卡号
             $table->string("customer_name"); //客户名称
             $table->string("tel", 20);
@@ -25,6 +25,8 @@ class CreateSaleCardTable extends Migration {
             $table->Integer("discount"); //优惠金额
             $table->Integer("pay_mount"); //实际支付金额
             $table->string("address", 100); //邮寄地址
+            $table->tinyInteger("status"); //交易状态
+            $table->tinyInteger("post_status"); //邮寄状态
             $table->timestamps();
         });
 	}

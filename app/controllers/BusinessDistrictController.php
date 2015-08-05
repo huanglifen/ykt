@@ -24,7 +24,7 @@ class BusinessDistrictController extends  BaseController {
 
         $cities = AreaModule::getAreaByParentId();
         $districts = array();
-        if(! empty($cities)) {
+        if(count($cities)) {
             $districts = AreaModule::getAreaByParentId($cities[0]->id);
         }
 
