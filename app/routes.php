@@ -49,6 +49,7 @@ Route::controller('app', "App\Controllers\AppController");
 Route::controller('paySet', "App\Controllers\PaySetController");//生活缴费业务设置
 Route::controller('payment', "App\Controllers\PaymentController");//生活缴费
 Route::controller('sale-card', "App\Controllers\SaleCardController"); //在线售卡
+Route::controller("recharge", "App\Controllers\RechargeController");
 
 
 
