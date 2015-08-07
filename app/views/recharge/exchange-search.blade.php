@@ -26,9 +26,13 @@
     <div class="container-fluid">
         <?php
         $breadTitle = "查询交易";
-        $breadcrumb = array(
-                array("交易管理"),
-                array("充值查询", $baseURL . '/recharge/index'));
+        $breadcrumb = array( );
+            $breadcrumb[] = array("交易管理");
+            if($tradeTyp == 1) {
+                $breadcrumb[] = array("充值查询", $baseURL . '/exchange/index/'.$tradeTyp);
+            }elseif($tradeTyp == 2) {
+                $breadcrumb[] = array("消费查询", $baseURL . '/exchange/index/'.$tradeTyp);
+            }
         ?>
         @include('common.bread')
         <!-- BEGIN PAGE CONTENT-->
@@ -42,7 +46,7 @@
                                 <div class="row-fluid">
                                     <div class="span8">
                                         <div class="control-group ">
-                                            <label class="control-label min-label">充值时间</label>
+                                            <label class="control-label min-label">交易时间</label>
                                             <div class="controls min-controls">
                                                 <div class="span4">
                                                     <select class="chosen span12" tabindex="1" id="payDate">
@@ -63,7 +67,7 @@
                                         </div>
                                     </div>
                                     <div class="span4">
-                                        <label class="control-label min-label">充值状态</label>
+                                        <label class="control-label min-label">交易状态</label>
                                         <div class="controls min-controls">
                                             <select class="chosen span9" tabindex="1" id="status" name="status">
                                                 @foreach($status as $key => $value)
@@ -93,16 +97,18 @@
                                         </div>
                                     </div>
                                     <div class="span4">
-                                        <div class="control-group">
-                                            <label class="control-label min-label">交易类型</label>
-                                            <div class="controls min-controls">
-                                                <select class="span9 chosen" tabindex="1" id="tradeType">
-                                                    @foreach($tradeType as $key => $value)
-                                                        <option value="{{{$key}}}">{{{$value}}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                        @if($tradeTyp == 0)
+                                        <label class="control-label min-label">交易类型</label>
+                                        <div class="controls min-controls">
+                                            <select class="chosen span9" tabindex="1" id="tradeType" name="tradeType">
+                                                @foreach($tradeTypes as $key => $value)
+                                                    <option value="{{{$key}}}">{{{$value}}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
+                                            @else
+                                            <input type="hidden" value="{{{$tradeTyp}}}" id="tradeType"/>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="row-fluid">
@@ -166,7 +172,7 @@
     <script>
         $(function () {
             var statusArr = <?php echo json_encode($status); ?>;
-            var tradeType = <?php echo json_encode($tradeType); ?>;
+            var tradeTypes = <?php echo json_encode($tradeTypes); ?>;
             var payType = <?php echo json_encode($payType); ?>;
             var businessName = <?php echo json_encode($businessName); ?>;
             App.init();
@@ -209,8 +215,8 @@
                 "fnDrawCallback": function () {
                     App.initUniform();
                 },
-                "sAjaxDataProp": 'recharge',
-                "sAjaxSource": baseURL + 'recharge/recharge',
+                "sAjaxDataProp": 'exchange',
+                "sAjaxSource": baseURL + 'exchange/exchange?tradeType=' + <?php echo $tradeTyp; ?>,
                 "aoColumns": [{
                     "mData": "created_at",
                     "aTargets": [0]
@@ -242,7 +248,7 @@
                     "mData": null,
                     "aTargets": [7],
                     "fnRender" : function(obj) {
-                        return tradeType[obj.aData.type];
+                        return tradeTypes[obj.aData.type];
                     }
                 }, {
                     "mData": null,
@@ -261,7 +267,7 @@
                 var minMount = $("#minMount").val();
                 var maxMount = $("#maxMount").val();
                 var date = $("#payDate").val();
-                var tradeType = $("#tradeType").val();
+                var tradeTyp = $("#tradeType").val();;
                 if(date == 0) {
                     var startTime = $("#startTime").val();
                     var endTime = $("#endTime").val();
@@ -270,7 +276,7 @@
                     var endTime = "";
                 }
 
-                oSettings.sAjaxSource = baseURL + "recharge/recharge?date="+date+"&startTime="+startTime+"&endTime="+endTime+"&status="+status+"&type="+keywordType+"&keyword="+keyword+"&minMount="+minMount+"&maxMount="+maxMount;
+                oSettings.sAjaxSource = baseURL + "exchange/exchange?date="+date+"&startTime="+startTime+"&endTime="+endTime+"&status="+status+"&type="+keywordType+"&keyword="+keyword+"&minMount="+minMount+"&maxMount="+maxMount+"&tradeType="+tradeTyp;
                 oSettings._iDisplayStart = 0;
                 tbl.fnClearTable(0);
                 tbl.fnDraw();

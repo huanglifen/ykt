@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRechargeTable extends Migration {
-    protected $tableName = "recharge";
+class CreateExchangeTable extends Migration {
+    protected $tableName = "exchange";
 
 	/**
 	 * Run the migrations.
