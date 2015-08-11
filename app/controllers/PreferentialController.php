@@ -135,8 +135,26 @@ class PreferentialController extends BaseController {
 
         Excel::create($fileName, function($excel) use($result) {
             $excel->sheet('sheet1', function($sheet) use($result) {
-                $sheet->fromArray($result, null, "A1", false, false);
+                $sheet->fromArray($result, null, "A1", true, false);
                 $sheet->setAutoSize(true);
+                $sheet->setWidth(array(
+                    'A' => 20,
+                    'B' => 20,
+                    'C' => 20,
+                    'D' => 20,
+                    'E' => 20,
+                    'F' => 20,
+                    'G' => 20,
+                    'H' => 20,
+                    'I' => 20,
+                    'J' => 20,
+                    'K' => 20,
+                    'L' => 20,
+                    'M' => 20,
+                ));
+                $sheet->cells('A1:M1', function($cells) {
+                    $cells->setFontWeight('bold');
+                });
             });
         })->export($fileType);
     }

@@ -32,6 +32,8 @@
                 $breadcrumb[] = array("充值查询", $baseURL . '/exchange/index/'.$tradeTyp);
             }elseif($tradeTyp == 2) {
                 $breadcrumb[] = array("消费查询", $baseURL . '/exchange/index/'.$tradeTyp);
+            } else {
+                $breadcrumb[] = array("查询业务", $baseURL . '/exchange/index/'.$tradeTyp);
             }
         ?>
         @include('common.bread')
@@ -229,7 +231,12 @@
                     "mData": null,
                     "aTargets": [1],
                     "fnRender" : function(obj) {
-                        return businessName[obj.aData.business_id];
+                        if(obj.aData.type == <?php echo \App\Module\ExchangeModule::TYPE_RECHARGE ?>) {
+                            return businessName[obj.aData.business_id];
+                        }else {
+                            return obj.aData.businessName;
+                        }
+
                     }
                 }, {
                     "mData": "order_no",
@@ -280,7 +287,6 @@
                     var startTime = "";
                     var endTime = "";
                 }
-
                 oSettings.sAjaxSource = baseURL + "exchange/exchange?date="+date+"&startTime="+startTime+"&endTime="+endTime+"&status="+status+"&type="+keywordType+"&keyword="+keyword+"&minMount="+minMount+"&maxMount="+maxMount+"&tradeType="+tradeTyp;
                 oSettings._iDisplayStart = 0;
                 tbl.fnClearTable(0);

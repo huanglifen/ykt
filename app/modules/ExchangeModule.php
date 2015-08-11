@@ -14,6 +14,8 @@ class ExchangeModule extends BaseModule {
     const PAY_TYPE_WEIXIN = 1; //微信支付
     const PAY_TYPE_ALIPAY = 2; //支付宝支付
     const PAY_TYPE_UNION = 3; //银联
+    const TYPE_RECHARGE = 1; //充值
+    const TYPE_PAYMENT = 2; //消费
 
     /**
      * 按条件获取交易记录
@@ -33,6 +35,9 @@ class ExchangeModule extends BaseModule {
      */
     public static function getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $type, $minMount, $maxMount, $offset, $limit) {
         $exchange = new Exchange();
+        $exchange = $exchange->leftJoin('business', function($join) {
+            $join->on("business.id", '=', 'exchange.business_id')->where("exchange.type", '=', self::TYPE_PAYMENT);
+        });
         if($startTime) {
             $exchange = $exchange->where("created_at", '>=', $startTime);
         }
@@ -63,6 +68,7 @@ class ExchangeModule extends BaseModule {
         if($limit) {
             $exchange = $exchange->offset($offset)->limit($limit);
         }
+        $exchange = $exchange->selectRaw("exchange.*, business.name as businessName");
         return $exchange->get();
     }
 

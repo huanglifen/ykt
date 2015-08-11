@@ -42,7 +42,9 @@ class CustomerModule extends  BaseModule {
         $customer = $customer->leftJoin('card', 'card.id', '=', 'customer.cardid');
         $customer = $customer->selectRaw("customer.id, customer.username, customer.openid, customer.idcard, customer.mobile, customer.address, card.cardno ");
         $customer = $customer->first();
-        $customer->cardno = self::encrypt($customer->cardno, "D");
+        if(! empty($customer)) {
+            $customer->cardno = self::encrypt($customer->cardno, "D");
+        }
         return $customer;
     }
 

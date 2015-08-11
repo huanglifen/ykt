@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * 基类控制器
+ *
+ * @package App\Controllers
+ */
 class BaseController extends Controller {
 
     public $errorInfo = array();

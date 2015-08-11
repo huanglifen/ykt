@@ -35,6 +35,11 @@ class BusinessController extends  BaseController {
         return $this->showView('business.business');
     }
 
+    /**
+     * 按条件获取商户记录
+     *
+     * @return string
+     */
     public function getBusiness() {
         $this->outputUserNotLogin();
 

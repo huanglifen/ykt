@@ -33,7 +33,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <select class="span11 chosen" tabindex="1" id="parentId" name="parentId">
-                                                <option value="-1">所属父行业</option>
+                                                <option value="-1">全部</option>
                                                 <option value="0">无</option>
                                                 @foreach($parents as $parent)
                                                 <option value="{{{$parent->id}}}">{{{$parent->name}}}</option>

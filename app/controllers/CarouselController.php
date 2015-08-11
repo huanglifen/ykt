@@ -167,6 +167,7 @@ class CarouselController extends  BaseController {
 
         $content = "删除轮播图：" . $carousel->picture;
         LogModule::log($content, LogModule::TYPE_UPDATE);
+
         return $this->outputContent($result);
     }
 }

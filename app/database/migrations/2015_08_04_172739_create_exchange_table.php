@@ -19,7 +19,7 @@ class CreateExchangeTable extends Migration {
             $table->string("trade_no", 100); //交易号
             $table->Integer("business_id"); //商户id
             $table->Integer("cardno"); //卡号
-            $table->tinyInteger("type"); //交易类型
+            $table->tinyInteger("type"); //交易类型 1 充值 2 消费
             $table->double("mount"); //交易金额
             $table->double("pay_mount"); //支付金额
             $table->tinyInteger("pay_type"); //支付方式

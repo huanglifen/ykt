@@ -1,6 +1,5 @@
 <?php namespace App\Controllers;
 
-use App\Model\Exchange;
 use App\Module\ExchangeModule;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
@@ -35,8 +34,9 @@ class ExchangeController extends BaseController {
 
     //交易类型
     public $tradeType = array(
-        1 => '充值',
-        2 => '消费'
+        0 => '全部',
+        ExchangeModule::TYPE_RECHARGE => '充值',
+        ExchangeModule::TYPE_PAYMENT => '消费'
     );
 
     //支付类型
@@ -196,8 +196,13 @@ class ExchangeController extends BaseController {
 
         $result = array();
         $result[] = array("创建时间","商户名称","商户订单号","交易号","交易账号","支付方式","支付金额","交易类型","交易状态");
+
         foreach($exchange as $ex) {
-            $businessName = $this->businessName[$ex->business_id];
+            if($ex->type == ExchangeModule::TYPE_RECHARGE) {
+                $businessName = $this->businessName[$ex->business_id];
+            } else {
+                $businessName = $ex->businessName;
+            }
             $payType = $this->payType[$ex->pay_type];
             $exchangeType = $this->tradeType[$ex->type];
             $exchangeStatus = $this->statusArr[$ex->status];
@@ -213,8 +218,23 @@ class ExchangeController extends BaseController {
         }
         Excel::create($fileName, function($excel) use($result) {
             $excel->sheet('sheet1', function($sheet) use($result) {
-                $sheet->fromArray($result, null, "A1", false, false);
+                $sheet->fromArray($result, null, "A1", true, false);
                 $sheet->setAutoSize(true);
+                $sheet->setWidth(array(
+                    'A' => 20,
+                    'B' => 20,
+                    'C' => 20,
+                    'D' => 20,
+                    'E' => 20,
+                    'F' => 20,
+                    'G' => 20,
+                    'H' => 20,
+                    'I' => 20,
+                    'J' => 20,
+                ));
+                $sheet->cells('A1:I1', function($cells) {
+                    $cells->setFontWeight('bold');
+                });
             });
         })->export($fileType);
     }

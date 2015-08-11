@@ -176,7 +176,7 @@
                     "mData": null,
                     "aTargets": [1],
                     "fnRender" : function(obj) {
-                        return "<a class='JsMore' data-id='" + obj.aData.id + "' data-name='" + obj.aData.username + "'>"+obj.aData.username + " / " + obj.aData.uid + "</a>";
+                        return "<a class='JsMore' data-id='" + obj.aData.uid + "' data-name='" + obj.aData.username + "'>"+obj.aData.username + " / " + obj.aData.uid + "</a>";
                     }
                 }, {
                     "mData": "cardno",
@@ -211,6 +211,9 @@
                     'success' : function(json) {
                         Common.checkLogin(json);
                         var info = json.result;
+                        if(! info){
+                            alert("获取用户信息失败！");return;
+                        }
                         $("#JsModalUsername").text(info.username);
                         $("#JsModalOpenId").text(info.openid);
                         $("#JsModalCardno").text(info.cardno);
