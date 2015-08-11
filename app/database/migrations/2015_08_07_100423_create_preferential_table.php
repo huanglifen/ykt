@@ -18,6 +18,7 @@ class CreatePreferentialTable extends Migration {
             $table->string('creator', 60); //创建者
             $table->date("start_time");
             $table->date("end_time");
+            $table->string("name", 100);
             $table->tinyInteger("trade_type"); //交易类型，1：充值，2消费
             $table->tinyInteger("pay_type");//支付类型
             $table->double("pay_mount", 10,2); //支付类型
@@ -27,6 +28,7 @@ class CreatePreferentialTable extends Migration {
             $table->double("total_mount", 10, 2); //总交易金额
             $table->double("lowest_mount", 10, 2);//最低限额
             $table->double("highest_mount", 10, 2); //最高限额
+            $table->tinyInteger("target"); //优惠对象
             $table->timestamps();
         });
 	}

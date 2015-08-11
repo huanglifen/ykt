@@ -27,9 +27,11 @@ class ExchangeModule extends BaseModule {
      * @param $type
      * @param $minMount
      * @param $maxMount
+     * @param $offset
+     * @param $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $type, $minMount, $maxMount) {
+    public static function getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $type, $minMount, $maxMount, $offset, $limit) {
         $exchange = new Exchange();
         if($startTime) {
             $exchange = $exchange->where("created_at", '>=', $startTime);
@@ -57,6 +59,9 @@ class ExchangeModule extends BaseModule {
         }
         if($maxMount) {
             $exchange = $exchange->where("pay_mount", '<=', $maxMount);
+        }
+        if($limit) {
+            $exchange = $exchange->offset($offset)->limit($limit);
         }
         return $exchange->get();
     }

@@ -3,6 +3,7 @@
 use App\Model\Exchange;
 use App\Module\ExchangeModule;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * 交易控制器
@@ -128,10 +129,93 @@ class ExchangeController extends BaseController {
             $endTime = $endTime ? date("Y-m-d 23:59:59", strtotime($endTime)) : '';
         }
 
-        $exchange = ExchangeModule::getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $tradeType, $minMount, $maxMount);
+        $exchange = ExchangeModule::getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $tradeType, $minMount, $maxMount, $offset, $limit);
         $total = ExchangeModule::countExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $tradeType, $minMount, $maxMount);
 
         $result = array('exchange' => $exchange, 'iTotalDisplayRecords' => $total, '_iRecordsTotal' => $total, 'iDisplayStart' => $offset, 'iDisplayLength' => $limit);
         return json_encode($result);
+    }
+
+    /**
+     * 下载
+     *
+     * @param string $fileType
+     * @return string
+     */
+    public function getDownload($fileType = 'xlsx') {
+        $this->outputUserNotLogin();
+
+        $offset = $this->getParam('iDisplayStart');
+        $limit = $this->getParam('iDisplayLength');
+        $startTime = $this->getParam('startTime');
+        $endTime = $this->getParam('endTime');
+        $keyword = $this->getParam('keyword');
+        $status = $this->getParam('status');
+        $minMount = $this->getParam('minMount');
+        $maxMount = $this->getParam('maxMount');
+        $date = $this->getParam('date');
+        $type = $this->getParam('type');
+        $tradeType = $this->getParam('tradeType');
+
+        $this->outputErrorIfExist();
+
+        $cardNo = '';
+        $orderNo = '';
+        $tradeNo = '';
+        if($type == 1) {
+            $orderNo = $keyword;
+        } elseif ($type == 2) {
+            $tradeNo = $keyword;
+        } elseif ($type == 3) {
+            $cardNo = $keyword;
+        }
+
+        if($date != 0) {
+            $now = time();
+            $endTime = date("Y-m-d H:i:s", strtotime("tomorrow")-1);
+            switch($date) {
+                case 1 :
+                    $startTime = date("Y-m-d H:i:s", mktime(0,0,0,date('m', $now), date('d', $now), date('Y', $now)));
+                    break;
+                case 2 :
+                    $startTime = date("Y-m-d 00:00:00", strtotime("-1 month"));
+                    break;
+                case 3 :
+                    $startTime = date("Y-m-d 00:00:00", strtotime("-3 month"));
+                    break;
+                default :
+                    $startTime = "";
+                    break;
+            }
+        } else {
+            $startTime = $startTime ? date("Y-m-d", strtotime($startTime)) : '';
+            $endTime = $endTime ? date("Y-m-d 23:59:59", strtotime($endTime)) : '';
+        }
+
+        $exchange = ExchangeModule::getExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $tradeType, $minMount, $maxMount, $offset, $limit);
+
+        $result = array();
+        $result[] = array("创建时间","商户名称","商户订单号","交易号","交易账号","支付方式","支付金额","交易类型","交易状态");
+        foreach($exchange as $ex) {
+            $businessName = $this->businessName[$ex->business_id];
+            $payType = $this->payType[$ex->pay_type];
+            $exchangeType = $this->tradeType[$ex->type];
+            $exchangeStatus = $this->statusArr[$ex->status];
+            $result[] = array($ex->created_at, $businessName, $ex->order_no, $ex->trade_no, $ex->cardno, $payType, $ex->pay_mount, $exchangeType, $exchangeStatus);
+        }
+        $fileName = date("YmdHis");
+        if($tradeType == 1) {
+            $fileName .= "充值查询";
+        }elseif($tradeType == 2){
+            $fileName .= "消费查询";
+        } else {
+            $fileName .= "查询业务";
+        }
+        Excel::create($fileName, function($excel) use($result) {
+            $excel->sheet('sheet1', function($sheet) use($result) {
+                $sheet->fromArray($result, null, "A1", false, false);
+                $sheet->setAutoSize(true);
+            });
+        })->export($fileType);
     }
 }

@@ -67,7 +67,7 @@
                                 <th style="width:15%">联系电话</th>
                                 <th style="width:10%">网点类型</th>
                                 <th style="width:15%">时间</th>
-                                <th>操作</th>
+                                <th style="width:10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
