@@ -18,7 +18,7 @@
         $breadcrumb = array(
                 array("商家信息"),
                 array("商户管理", $baseURL . '/business/index'),
-                array("新增商户", $baseURL . '/business/add'),
+                array("修改商户", $baseURL . '/business/update/'.$id),
         )
         ?>
         @include('common.bread')
@@ -439,8 +439,12 @@
         });
         jQuery(document).ready(function() {
             App.init();
+            var x = $("#lng").val() ;
+            var y = $("#lat").val();
+            var pointX = x ? x : false;
+            var pointY = y ? y : false;
+            Common.bindMap(pointX, pointY);
             Common.bindCitySelect(false);
-            Common.bindMap(false, false);
             changeCircle();
             //上传促销图片
             $("#jsPromotionPic").on('click', function() {
@@ -583,6 +587,10 @@
                     }
                 }
             });
+        }
+        //获取UEhtml内容
+        function getAllHtml() {
+            return ue.getContent();
         }
     </script>
 @stop

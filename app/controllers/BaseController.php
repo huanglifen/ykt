@@ -34,8 +34,7 @@ class BaseController extends Controller {
 	 *
 	 * @return void
 	 */
-	protected function setupLayout()
-	{
+	protected function setupLayout() {
 		if ( ! is_null($this->layout))
 		{
 			$this->layout = View::make($this->layout);
@@ -68,8 +67,7 @@ class BaseController extends Controller {
     /**
      * 响应参数验证失败
      */
-    protected function outputErrorIfExist()
-    {
+    protected function outputErrorIfExist() {
         if ($this->errorInfo) {
             $result = $this->output(self::RESPONSE_CHECK_FAIL, $this->errorInfo);
             echo $result;
@@ -80,8 +78,7 @@ class BaseController extends Controller {
     /**
      * 用户未登录
      */
-    protected function outputUserNotLogin()
-    {
+    protected function outputUserNotLogin() {
         $login = $this->isLogin();
         if(! $login) {
             $result = $this->output(self::RESPONSE_USER_NOT_LOGIN, '用户未登录');
@@ -124,7 +121,6 @@ class BaseController extends Controller {
                     if (preg_match("/(.*?)\:(.*)/", $rule, $matchMsg)) {
                         $rule = $matchMsg[1];
                     }
-
                     if ($message) {
                         $messages[$rule] = $message;
                     }

@@ -17,6 +17,7 @@ class AppModule extends BaseModule {
      * @param string $remark
      * @param string $url
      * @param string $share
+     * @return array
      */
     public static function setAppInfo($path, $version, $remark = '', $url = '', $share = '') {
         $app = App::first();

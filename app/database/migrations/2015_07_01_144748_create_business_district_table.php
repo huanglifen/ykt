@@ -19,8 +19,8 @@ class CreateBusinessDistrictTable extends Migration {
             $table->string("address", 200);
             $table->Integer("city_id");
             $table->Integer("district_id");
-            $table->string("lat", 50);
-            $table->string("lng", 50);
+            $table->string("lat", 50);//纬度
+            $table->string("lng", 50);//经度
             $table->string("remark", 500);
             $table->timestamps();
         });

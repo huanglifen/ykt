@@ -1,4 +1,5 @@
 <?php namespace App\Controllers;
+
 use App\Module\BusinessDistrictModule;
 use App\Module\BusinessModule;
 use App\Module\CardTypeModule;
@@ -107,7 +108,7 @@ class BusinessController extends  BaseController {
      * @param $id
      * @return \Illuminate\View\View
      */
-    public function getUpdate($id) {
+    public function getUpdate($id = 0) {
         if(! $this->isLogin()) {
             return Redirect::to('/login');
         }
@@ -129,7 +130,7 @@ class BusinessController extends  BaseController {
         $cardType = CardTypeModule::getCardType(0, -1);
         $industry = IndustryModule::getIndustries('', -1);
 
-        $this->data = compact('cities', 'districts', 'circles', 'cardType', 'industry', 'business');
+        $this->data = compact('id', 'cities', 'districts', 'circles', 'cardType', 'industry', 'business');
         return $this->showView('business.business-update');
     }
 

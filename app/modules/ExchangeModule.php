@@ -39,31 +39,31 @@ class ExchangeModule extends BaseModule {
             $join->on("business.id", '=', 'exchange.business_id')->where("exchange.type", '=', self::TYPE_PAYMENT);
         });
         if($startTime) {
-            $exchange = $exchange->where("created_at", '>=', $startTime);
+            $exchange = $exchange->where("exchange.created_at", '>=', $startTime);
         }
         if($endTime) {
-            $exchange = $exchange->where("created_at", '<=', $endTime);
+            $exchange = $exchange->where("exchange.created_at", '<=', $endTime);
         }
         if($status) {
-            $exchange = $exchange->where('status', $status);
+            $exchange = $exchange->where('exchange.status', $status);
         }
         if($orderNo) {
-            $exchange = $exchange->where("order_no", 'like', "%$orderNo%");
+            $exchange = $exchange->where("exchange.order_no", 'like', "%$orderNo%");
         }
         if($tradeNo) {
-            $exchange = $exchange->where("trade_no", 'like', "%$tradeNo%");
+            $exchange = $exchange->where("exchange.trade_no", 'like', "%$tradeNo%");
         }
         if($cardNo) {
-            $exchange = $exchange->where("cardno", 'like', "%$cardNo%");
+            $exchange = $exchange->where("exchange.cardno", 'like', "%$cardNo%");
         }
         if($type) {
-            $exchange = $exchange->where("type", $type);
+            $exchange = $exchange->where("exchange.type", $type);
         }
         if($minMount) {
-            $exchange = $exchange->where("pay_mount", '>=', $minMount);
+            $exchange = $exchange->where("exchange.pay_mount", '>=', $minMount);
         }
         if($maxMount) {
-            $exchange = $exchange->where("pay_mount", '<=', $maxMount);
+            $exchange = $exchange->where("exchange.pay_mount", '<=', $maxMount);
         }
         if($limit) {
             $exchange = $exchange->offset($offset)->limit($limit);
@@ -89,31 +89,31 @@ class ExchangeModule extends BaseModule {
     public static function countExchanges($startTime, $endTime, $status, $orderNo, $tradeNo, $cardNo, $type, $minMount, $maxMount) {
         $exchange = new Exchange();
         if($startTime) {
-            $exchange = $exchange->where("created_at", '>=', $startTime);
+            $exchange = $exchange->where("exchange.created_at", '>=', $startTime);
         }
         if($endTime) {
-            $exchange = $exchange->where("created_at", '<=', $endTime);
+            $exchange = $exchange->where("exchange.created_at", '<=', $endTime);
         }
         if($status) {
-            $exchange = $exchange->where('status', $status);
+            $exchange = $exchange->where('exchange.status', $status);
         }
         if($orderNo) {
-            $exchange = $exchange->where("order_no", 'like', "%$orderNo%");
+            $exchange = $exchange->where("exchange.order_no", 'like', "%$orderNo%");
         }
         if($tradeNo) {
-            $exchange = $exchange->where("trade_no", 'like', "%$tradeNo%");
+            $exchange = $exchange->where("exchange.trade_no", 'like', "%$tradeNo%");
         }
         if($cardNo) {
-            $exchange = $exchange->where("cardno", 'like', "%$cardNo%");
+            $exchange = $exchange->where("exchange.cardno", 'like', "%$cardNo%");
         }
         if($type) {
-            $exchange = $exchange->where("type", $type);
+            $exchange = $exchange->where("exchange.type", $type);
         }
         if($minMount) {
-            $exchange = $exchange->where("pay_mount", '>=', $minMount);
+            $exchange = $exchange->where("exchange.pay_mount", '>=', $minMount);
         }
         if($maxMount) {
-            $exchange = $exchange->where("pay_mount", '<=', $maxMount);
+            $exchange = $exchange->where("exchange.pay_mount", '<=', $maxMount);
         }
         return $exchange->count();
     }
