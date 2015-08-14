@@ -2,6 +2,7 @@
 
 use App\Module\ContentModule;
 use App\Module\ContentTypeModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -109,6 +110,7 @@ class HelpController extends  BaseController {
         $result = ContentModule::addContent($title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $sort, $category);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("新增帮助内容：$title", LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -161,6 +163,7 @@ class HelpController extends  BaseController {
         $result = ContentModule::updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $sort, $category);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("修改帮助内容：$title", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -175,8 +178,12 @@ class HelpController extends  BaseController {
         $id = $this->getParam('id', 'required|numeric');
 
         $this->outputErrorIfExist();
+
+        $help = ContentModule::getContentById($id);
         $result = ContentModule::deleteContent($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除帮助内容：" . $help->title, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

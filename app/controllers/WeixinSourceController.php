@@ -1,4 +1,5 @@
 <?php namespace App\Controllers;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\Redirect;
 use App\Module\ContentModule;
 
@@ -97,6 +98,7 @@ class WeixinSourceController extends BaseController {
         $result = ContentModule::addContent($title, $brief, $context, 1, '', '', $type, 0, 0, 0, $category, $parentId, $url, $cover);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("新增微信素材：" . $title, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -115,6 +117,7 @@ class WeixinSourceController extends BaseController {
         $type = ContentModule::TYPE_MULTI;
         $category = ContentModule::CATEGORY_WEIXIN;
 
+        $title = $source[0]['title'];
         $result = ContentModule::addContent($source[0]['title'], '', $source[0]['content'], 1, '', '', $type, 0, 0, 0, $category, 0, $source[0]['url'], $source[0]['pic']);
         $parentId = $result['id'];
         unset($source[0]);
@@ -125,6 +128,8 @@ class WeixinSourceController extends BaseController {
                 $this->outputErrorIfFail($result);
             }
         }
+
+        LogModule::log("新增微信素材-多条图文：" . $title, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -186,6 +191,7 @@ class WeixinSourceController extends BaseController {
         $result = ContentModule::updateContent($id, $title, $brief, $context, 1, '', '', $type, 0, 0, $category, $parentId, $url, $cover);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("更新微信素材：" . $title, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -204,6 +210,7 @@ class WeixinSourceController extends BaseController {
         $type = ContentModule::TYPE_MULTI;
         $category = ContentModule::CATEGORY_WEIXIN;
 
+        $title = $source[0]['title'];
         $result = ContentModule::updateContent($source[0]['id'], $source[0]['title'], '', $source[0]['content'], 1, '', '', $type, 0, 0, $category, 0, $source[0]['url'], $source[0]['pic']);
         $parentId = $source[0]['id'];
         unset($source[0]);
@@ -235,6 +242,8 @@ class WeixinSourceController extends BaseController {
                 }
             }
         }
+
+        LogModule::log("更新微信素材-多条图文：" . $title, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -250,8 +259,11 @@ class WeixinSourceController extends BaseController {
         $type = $this->getParam('parentId');
         $this->outputErrorIfExist();
 
+        $source = ContentModule::getContentById($id);
         $result = ContentModule::deleteWeixinSource($id, $type);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除微信素材：" . $source->title. $id, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 

@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Module\AppModule;
+use App\Module\LogModule;
 use App\Utils\Utils;
 
 class AppController extends BaseController {
@@ -77,6 +78,8 @@ class AppController extends BaseController {
 
         $result = AppModule::setAppInfo($path, $version, $remark, $url, $share);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("上传APP" . $version, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 }

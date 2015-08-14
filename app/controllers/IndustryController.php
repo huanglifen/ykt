@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Module\IndustryModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\Redirect;
 
 /**
@@ -80,6 +81,8 @@ class IndustryController extends BaseController {
 
         $result = IndustryModule::addIndustry($name, $parentId);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("新增行业：$name", LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -120,6 +123,7 @@ class IndustryController extends BaseController {
         $result = IndustryModule::updateIndustryById($id, $name, $parentId);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("修改行业：$name", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -134,9 +138,11 @@ class IndustryController extends BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $industry = IndustryModule::getIndustryById($id);
         $result = IndustryModule::deleteIndustry($id);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("删除行业：" .$industry->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

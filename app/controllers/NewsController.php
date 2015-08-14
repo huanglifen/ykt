@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Module\ContentModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\Lang;
 
 /**
@@ -98,6 +99,7 @@ class NewsController extends  BaseController {
         $result = ContentModule::addContent($title, '', $context, $display, $source, $author, $type, $startTime, $endTime, 0, $category);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("新增新闻：" . $title, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -152,6 +154,7 @@ class NewsController extends  BaseController {
         $result = ContentModule::updateContent($id, $title, '', $context, $display, $source, $author, $type, $startTime, $endTime, $category);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("修改新闻：" . $title, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -164,10 +167,13 @@ class NewsController extends  BaseController {
         $this->outputUserNotLogin();
 
         $id = $this->getParam('id', 'required|numeric');
-
         $this->outputErrorIfExist();
+
+        $news = ContentModule::getContentById($id);
         $result = ContentModule::deleteContent($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除新闻：" . $news->title, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

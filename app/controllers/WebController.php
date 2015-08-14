@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 
+use App\Module\LogModule;
 use App\Module\WebModule;
 
 /**
@@ -48,6 +49,7 @@ class WebController extends BaseController {
         $result = WebModule::updateWebInfo($name, $site, $abbr, $fillNumber, $title, $keyword, $describe, $headLog, $bottomLog, $code, $weibo, $qq);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("更新网站站点信息", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 }

@@ -160,6 +160,16 @@ class WeixinMenuModule extends BaseModule {
     }
 
     /**
+     * 按主键获取一个微信菜单
+     *
+     * @param $id
+     * @return \Illuminate\Support\Collection|null|static
+     */
+    public static function getMenuById($id) {
+        return WeixinMenu::find($id);
+    }
+
+    /**
      * 获取每个菜单对应字段的值
      *
      * @param $menu

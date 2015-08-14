@@ -2,6 +2,7 @@
 
 use App\Module\AreaModule;
 use App\Module\BusinessDistrictModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\Redirect;
 
 /**
@@ -98,6 +99,8 @@ class BusinessDistrictController extends  BaseController {
         $this->outputErrorIfExist();
 
         $result = BusinessDistrictModule::addCircle($name, $cityId, $districtId, $address, $lat, $lng, $keyword);
+
+        LogModule::log("新增商圈：$name", LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -140,6 +143,8 @@ class BusinessDistrictController extends  BaseController {
 
         $result = BusinessDistrictModule::updateCircle($id, $name, $cityId, $districtId, $address, $lat, $lng, $keyword);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("修改商圈：$name", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -154,7 +159,10 @@ class BusinessDistrictController extends  BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $circle = BusinessDistrictModule::getCircleById($id);
         $result = BusinessDistrictModule::deleteCircle($id);
+
+        LogModule::log("删除商圈：" . $circle->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 

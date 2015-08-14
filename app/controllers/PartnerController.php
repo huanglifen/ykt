@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 
+use App\Module\LogModule;
 use App\Module\PartnerModule;
 
 /**
@@ -70,6 +71,8 @@ class PartnerController extends BaseController {
 
         $result = PartnerModule::addPartner($name, $picture, $sort, $display);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("新增合作伙伴" . $name, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -112,6 +115,8 @@ class PartnerController extends BaseController {
 
         $result = PartnerModule::updatePartner($id, $name, $picture, $sort, $display);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("更新合作伙伴" . $name, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -126,8 +131,11 @@ class PartnerController extends BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $partner = PartnerModule::getPartnerById($id);
         $result = PartnerModule::deletePartner($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除合作伙伴" . $partner->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

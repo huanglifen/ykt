@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 use App\Module\AreaModule;
+use App\Module\LogModule;
 use App\Module\SiteModule;
 use Illuminate\Support\Facades\Redirect;
 
@@ -104,6 +105,7 @@ class SiteController extends  BaseController {
         $result = SiteModule::addSite($type, $number, $name, $contact, $address, $areaId, $startTime, $endTime, $tel, $picture, $remark);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("新增网点" . $name, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -169,6 +171,7 @@ class SiteController extends  BaseController {
         $result = SiteModule::updateSite($id, $type, $number, $name, $contact, $address, $areaId, $startTime, $endTime, $tel, $picture, $remark);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("更新网点" . $name, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -183,9 +186,11 @@ class SiteController extends  BaseController {
         $id = $this->getParam('id', 'required');
         $this->outputErrorIfExist();
 
+        $site = SiteModule::getSiteById($id);
         $result = SiteModule::deleteSite($id);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("删除网点：" . $site->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

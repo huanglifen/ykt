@@ -2,6 +2,7 @@
 
 use App\Module\AreaModule;
 use App\Module\CustomerServiceModule;
+use App\Module\LogModule;
 
 /**
  * 客服控制器
@@ -74,6 +75,8 @@ class CustomerServiceController extends BaseController {
         $this->outputUserNotLogin();
         $result = CustomerServiceModule::addCustomerService($name, $qq, $cityId, $display);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("新增客服" . $name, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -115,6 +118,7 @@ class CustomerServiceController extends BaseController {
         $result = CustomerServiceModule::updateCustomerService($id, $name, $qq, $cityId, $display);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("修改客服" . $name, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -129,9 +133,11 @@ class CustomerServiceController extends BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $cs = CustomerServiceModule::getCustomerServiceById($id);
         $result = CustomerServiceModule::deleteCustomerService($id);
         $this->outputErrorIfFail($result);
 
+        LogModule::log("删除客服" . $cs->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

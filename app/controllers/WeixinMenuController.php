@@ -1,6 +1,8 @@
 <?php namespace App\Controllers;
 
+use App\Model\WeixinMenu;
 use App\Module\ContentModule;
+use App\Module\LogModule;
 use App\Module\WeixinMenuModule;
 use App\Module\WeixinSourceModule;
 use Illuminate\Support\Facades\Redirect;
@@ -53,6 +55,11 @@ class WeixinMenuController extends BaseController {
             $result = WeixinMenuModule::addMenu($parentId, $name, $category, $type, $key, $url, 1, 0, 0);
         }
         $this->outputErrorIfFail($result);
+        if($id) {
+            LogModule::log("修改微信菜单：" . $name, LogModule::TYPE_UPDATE);
+        }else{
+            LogModule::log("新增微信菜单：" . $name, LogModule::TYPE_ADD);
+        }
         return $this->outputContent($result);
     }
 
@@ -67,8 +74,11 @@ class WeixinMenuController extends BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
 
+        $menu = WeixinMenuModule::getMenuById($id);
         $result = WeixinMenuModule::deleteMenu($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除微信菜单：" . $menu->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 
@@ -82,6 +92,8 @@ class WeixinMenuController extends BaseController {
 
         $result = WeixinMenuModule::syncMenu();
         $this->outputErrorIfFail($result);
+
+        LogModule::log("更新微信菜单到微信平台" , LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 }

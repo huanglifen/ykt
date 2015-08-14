@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Module\DumpModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\App;
 
 class DumpController extends BaseController {
@@ -51,6 +52,7 @@ class DumpController extends BaseController {
         $return = DumpModule::addDump($result['target'], $fileSize);
         $this->outputErrorIfFail($return);
 
+        LogModule::log("数据备份", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -74,6 +76,7 @@ class DumpController extends BaseController {
         }
         $this->outputErrorIfFail($result);
 
+        LogModule::log("数据恢复", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 

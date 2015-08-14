@@ -4,6 +4,7 @@ use App\Module\BusinessDistrictModule;
 use App\Module\BusinessModule;
 use App\Module\CardTypeModule;
 use App\Module\IndustryModule;
+use App\Module\LogModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Module\AreaModule;
@@ -99,6 +100,9 @@ class BusinessController extends  BaseController {
         $data['password'] = $this->getParam('password', 'required|max:100');
         $this->outputErrorIfExist();
         $result = BusinessModule::addBusiness($data);
+
+        LogModule::log("新增商户：" . $data['name'], LogModule::TYPE_ADD);
+
         return $this->outputContent($result);
     }
 
@@ -149,6 +153,8 @@ class BusinessController extends  BaseController {
         $this->outputErrorIfExist();
 
         $result = BusinessModule::updateBusiness($data);
+
+        LogModule::log("修改商圈：" . $data['name'], LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -162,8 +168,12 @@ class BusinessController extends  BaseController {
 
         $id = $this->getParam('id', 'required|numeric');
         $this->outputErrorIfExist();
+
+        $business = BusinessModule::getBusinessById($id);
         $result = BusinessModule::deleteBusinessById($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除商圈：" . $business->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 

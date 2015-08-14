@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 use App\Module\ActivityModule;
 use App\Module\BusinessModule;
+use App\Module\LogModule;
 
 /**
  * 活动控制器
@@ -99,6 +100,8 @@ class ActivityController extends  BaseController {
 
         $result = ActivityModule::addActivity($businessId, $title, $startTime, $endTime, $content, $status);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("增加活动：" . $title, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -151,6 +154,8 @@ class ActivityController extends  BaseController {
 
         $result = ActivityModule::updateActivity($id, $businessId, $title, $startTime, $endTime, $content, $status);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("更新活动：" . $title, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -166,8 +171,11 @@ class ActivityController extends  BaseController {
 
         $this->outputErrorIfExist();
 
+        $activity = ActivityModule::getActivityById($id);
         $result = ActivityModule::deleteActivity($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除活动：" . $activity->title, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

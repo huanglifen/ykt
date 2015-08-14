@@ -3,6 +3,7 @@ use App\Module\AreaModule;
 use App\Module\BusinessDistrictModule;
 use App\Module\BusinessModule;
 use App\Module\CouponModule;
+use App\Module\LogModule;
 
 /**
  * 优惠券控制器
@@ -106,6 +107,8 @@ class CouponController extends  BaseController {
 
         $result = CouponModule::addCoupon($businessId, $title, $picture, $amount, $remainAmount, $cityId, $startTime, $endTime, $content, $status);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("增加优惠券：" . $title, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -163,6 +166,8 @@ class CouponController extends  BaseController {
 
         $result = CouponModule::updateCoupon($id, $businessId, $title, $picture, $amount, $remainAmount, $cityId, $startTime, $endTime, $content, $status);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("修改优惠券：" . $title, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -178,8 +183,11 @@ class CouponController extends  BaseController {
 
         $this->outputErrorIfExist();
 
+        $coupon = CouponModule::getCouponById($id);
         $result = CouponModule::deleteCoupon($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("删除优惠券：" . $coupon->title, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }
