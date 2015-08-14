@@ -1,6 +1,7 @@
 <?php  namespace App\Controllers;
 
 use App\Module\CardModule;
+use App\Module\LogModule;
 use App\Utils\Utils;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,6 +42,9 @@ class ImportController extends BaseController{
             array_shift($results);
 
             $result = CardModule::importCards($results);
+            if($result['success'] > 0) {
+                LogModule::log("成功导入卡记录" . $result['success'] . "条", LogModule::TYPE_ADD);
+            }
             echo $this->outputContent($result);
         });
     }
