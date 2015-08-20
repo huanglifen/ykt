@@ -54,7 +54,7 @@ class BusinessModule extends BaseModule {
      * @return \Illuminate\Support\Collection|null|static
      */
     public static function getBusinessById($id) {
-        return Business::where('id', $id)->selectRaw('id, name, number, account, tel, contacter, bank_type, industry, city_id')->first();
+        return Business::where('id', $id)->selectRaw('id, name, number, account, tel, contacter, bank_type, industry, city_id, lng, lat')->first();
     }
 
     /**

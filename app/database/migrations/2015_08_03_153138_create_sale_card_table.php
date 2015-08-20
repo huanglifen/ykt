@@ -16,14 +16,14 @@ class CreateSaleCardTable extends Migration {
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->string("order_no", 30);
-            $table->string("cardno", 100); //加密后的卡号
-            $table->string("customer_name"); //客户名称
+            $table->string("cardno", 50); //加密后的卡号
+            $table->string("customer_name", 50); //客户名称
             $table->string("tel", 20);
-            $table->Integer("card_fee"); //卡费
-            $table->Integer("deposit"); //押金
-            $table->Integer("recharge_mount");//充值金额
-            $table->Integer("discount"); //优惠金额
-            $table->Integer("pay_mount"); //实际支付金额
+            $table->double("card_fee", 5, 2); //卡费
+            $table->double("deposit", 5 , 2); //押金
+            $table->double("recharge_mount", 8, 2);//充值金额
+            $table->double("discount", 5, 2); //优惠金额
+            $table->double("pay_mount", 8, 2); //实际支付金额
             $table->string("address", 100); //邮寄地址
             $table->tinyInteger("status"); //交易状态
             $table->tinyInteger("post_status"); //邮寄状态

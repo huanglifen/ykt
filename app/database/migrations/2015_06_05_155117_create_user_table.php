@@ -16,7 +16,7 @@ class CreateUserTable extends Migration {
 		Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->string("name", 100); //用户名
-            $table->string("password", 200); //密码
+            $table->string("password", 50); //密码
             $table->string("realname", 100); //密码
             $table->integer("role_id");//角色ID
             $table->integer("department_id");//角色ID

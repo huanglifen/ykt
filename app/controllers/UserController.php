@@ -142,7 +142,7 @@ class UserController extends  BaseController {
 
         $id = $this->getParam('id', 'required|numeric');
         $realName = htmlspecialchars($this->getParam('realName', 'required'));
-        $roleId = $this->getParam('roleId', 'required');
+        $roleId = $this->getParam('roleId');
         $departmentId = $this->getParam('departmentId');
         $tel = htmlspecialchars($this->getParam('tel'));
         $mail = $this->getParam('mail');
@@ -249,6 +249,14 @@ class UserController extends  BaseController {
 
         $userId = \Session::get('user_id');
         $user = UserModule::getUserById($userId);
+
+        $user->roleName = '';
+        foreach($roles as $r) {
+            if($r->id == $user->role_id) {
+                $user->roleName = $r->name;
+                break;
+            }
+        }
         $this->data = compact('user', 'roles', 'departments');
         return $this->showView('login/userinfo');
     }

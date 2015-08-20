@@ -18,6 +18,7 @@ class CreateLogTable extends Migration {
             $table->string("ip", 30);
             $table->string("content", 200);
             $table->dateTime("time");
+            $table->tinyInteger("result");
         });
 	}
 

@@ -41,15 +41,7 @@
                             <div class="control-group">
                                 <label class="control-label">角色</label>
                                 <div class="controls">
-                                    <select class="span6 chosen" tabindex="1" id="roleId" name="roleId">
-                                        @if(count($roles) == 0)
-                                            <option value="0">请先创建角色</option>
-                                        @else
-                                            @foreach($roles as $role)
-                                                <option value="{{{$role->id}}}" @if($role->id == $user->role_id) selected @endif>{{{$role->name}}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
+                                    <input type="text" class="span6 m-wrap" disabled value="{{{$user->roleName}}}" />
                                 </div>
                             </div>
                             <div class="control-group">

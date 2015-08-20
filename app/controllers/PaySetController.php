@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Module\CardTypeModule;
+use App\Module\LogModule;
 use App\Module\PaySetModule;
 use Illuminate\Support\Facades\Redirect;
 
@@ -83,6 +84,8 @@ class PaySetController extends BaseController {
 
         $result = PaySetModule::updateStatus($id);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("业务设置,修改业务状态：" . $id, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -100,6 +103,8 @@ class PaySetController extends BaseController {
 
         $result = PaySetModule::updateMoney($id, $money);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("业务设置,修改支持的金额：".$id, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -117,6 +122,8 @@ class PaySetController extends BaseController {
 
         $result = PaySetModule::updateCardType($id, $cardType);
         $this->outputErrorIfFail($result);
+
+        LogModule::log("业务设置,修改支持的卡类型：".$id, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 

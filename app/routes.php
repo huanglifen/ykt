@@ -51,6 +51,7 @@ Route::controller('payment', "App\Controllers\PaymentController");//生活缴费
 Route::controller('sale-card', "App\Controllers\SaleCardController"); //在线售卡
 Route::controller("exchange", "App\Controllers\ExchangeController");
 Route::controller("preferential", "App\Controllers\PreferentialController"); //充值、消费交易优惠
+Route::controller("subject", "App\Controllers\SubjectController");
 
 
 

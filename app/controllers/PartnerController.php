@@ -72,7 +72,7 @@ class PartnerController extends BaseController {
         $result = PartnerModule::addPartner($name, $picture, $sort, $display);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("新增合作伙伴" . $name, LogModule::TYPE_ADD);
+        LogModule::log("新增合作伙伴：" . $name, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -116,7 +116,7 @@ class PartnerController extends BaseController {
         $result = PartnerModule::updatePartner($id, $name, $picture, $sort, $display);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("更新合作伙伴" . $name, LogModule::TYPE_UPDATE);
+        LogModule::log("更新合作伙伴：" . $name, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -135,7 +135,7 @@ class PartnerController extends BaseController {
         $result = PartnerModule::deletePartner($id);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("删除合作伙伴" . $partner->name, LogModule::TYPE_DEL);
+        LogModule::log("删除合作伙伴：" . $partner->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 }

@@ -154,7 +154,7 @@ class BusinessController extends  BaseController {
 
         $result = BusinessModule::updateBusiness($data);
 
-        LogModule::log("修改商圈：" . $data['name'], LogModule::TYPE_UPDATE);
+        LogModule::log("修改商户：" . $data['name'], LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 
@@ -173,7 +173,7 @@ class BusinessController extends  BaseController {
         $result = BusinessModule::deleteBusinessById($id);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("删除商圈：" . $business->name, LogModule::TYPE_DEL);
+        LogModule::log("删除商户：" . $business->name, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 

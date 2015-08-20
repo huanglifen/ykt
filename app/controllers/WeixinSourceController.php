@@ -263,7 +263,7 @@ class WeixinSourceController extends BaseController {
         $result = ContentModule::deleteWeixinSource($id, $type);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("删除微信素材：" . $source->title. $id, LogModule::TYPE_DEL);
+        LogModule::log("删除微信素材：" . $source->title, LogModule::TYPE_DEL);
         return $this->outputContent($result);
     }
 

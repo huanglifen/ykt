@@ -99,7 +99,9 @@ class UserModule extends BaseModule {
             return array('status' => true);
         }
         $user->realname = $realName;
-        $user->role_id = $roleId;
+        if($roleId) {
+            $user->role_id = $roleId;
+        }
         $user->department_id = $departmentId;
         $user->tel = $tel;
         $user->mail = $mail;

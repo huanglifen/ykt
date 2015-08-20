@@ -3,9 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCardBindTable extends Migration {
-    public $tableName = "card_bind"; //该表管理平台未用到
-
+class CreateJoinSubjectTable extends Migration {
+    protected $tableName = 'join_subject'; //报名参加活动用户信息
 	/**
 	 * Run the migrations.
 	 *
@@ -15,10 +14,8 @@ class CreateCardBindTable extends Migration {
 	{
 		Schema::create($this->tableName, function($table) {
             $table->increments("id");
-            $table->Integer("cutomer_id");
-            $table->Integer("card_id");
-            $table->tinyInteger("flag");
-            $table->tinyInteger("opt_type");
+            $table->Integer("subject_id");
+            $table->string("info", 500);
             $table->timestamps();
         });
 	}

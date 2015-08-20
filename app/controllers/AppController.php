@@ -79,7 +79,7 @@ class AppController extends BaseController {
         $result = AppModule::setAppInfo($path, $version, $remark, $url, $share);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("上传APP" . $version, LogModule::TYPE_ADD);
+        LogModule::log("上传APP，版本号：" . $version, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 }

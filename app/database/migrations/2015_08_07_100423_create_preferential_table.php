@@ -21,8 +21,8 @@ class CreatePreferentialTable extends Migration {
             $table->string("name", 100);
             $table->tinyInteger("trade_type"); //交易类型，1：充值，2消费
             $table->tinyInteger("pay_type");//支付类型
-            $table->double("pay_mount", 10,2); //支付类型
-            $table->tinyInteger("strategy"); //优惠策略，1按百分比，2 优惠率
+            $table->double("pay_mount", 10,2); //支付金额
+            $table->tinyInteger("strategy"); //优惠策略，1按百分比，2 满减
             $table->tinyInteger("source"); // 优惠来源
             $table->double("prefer_mount", 10, 2);//优惠金额
             $table->double("total_mount", 10, 2); //总交易金额

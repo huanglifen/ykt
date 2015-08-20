@@ -49,6 +49,12 @@ class WeixinMenuController extends BaseController {
 
         $key  = $key ? $key : '';
         $url = $url ? $url : '';
+
+        $check = $this->checkKeyOrUrl($parentId, $type, $key, $url);
+        if(! $check) {
+            $return = array('status' => false, 'msg' => 'key value not null or valid url');
+            $this->outputErrorIfFail($return);
+        }
         if($id) {
             $result = WeixinMenuModule::updateMenu($id, $parentId, $name, $category, $type, $key, $url, 1, 0, 0);
         } else {
@@ -95,5 +101,25 @@ class WeixinMenuController extends BaseController {
 
         LogModule::log("更新微信菜单到微信平台" , LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
+    }
+
+    /**
+     * 检查KEY或者URL的合法性
+     * @param $type
+     * @param $key
+     * @param $url
+     * @return bool
+     */
+    private function checkKeyOrUrl($parentId, $type, $key, $url) {
+        if($type == WeixinMenuModule::TYPE_VIEW) {
+            if(! preg_match('/^https*:\/\/.+$/', $url)) {
+                return false;
+            }
+        }else{
+            if(! $key && $parentId) {
+                return false;
+            }
+        }
+        return true;
     }
 }

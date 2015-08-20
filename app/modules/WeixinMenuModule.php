@@ -11,8 +11,10 @@ use App\Model\WeixinMenu;
 class WeixinMenuModule extends BaseModule {
     const LEVEL_ONE_NUM = 3; //一级菜单至多3个
     const LEVEL_TWO_NUM = 5; //每个一级菜单下二级菜单至多5个
-    const TYPE_CLICK = 'CLICK';
-    const TYPE_VIEW = 'VIEW';
+    const TYPE_CLICK = 'click';
+    const TYPE_VIEW = 'view';
+    const DELETED = 1;
+    const NOT_DELETED = 0;
 
     /**
      * 新增一个菜单
@@ -29,10 +31,10 @@ class WeixinMenuModule extends BaseModule {
      * @return array
      */
     public static function addMenu($parentId, $name, $category, $type, $key, $url, $isShow, $isDel, $orderNo = 0) {
-        $siblings = WeixinMenu::where('parent_id', $parentId)->count();
+        $siblings = WeixinMenu::where('parent_id', $parentId)->where("is_del", self::NOT_DELETED)->count();
 
         if(($parentId == 0 && $siblings >= self::LEVEL_ONE_NUM) ||($parentId > 0 &&$siblings >= self::LEVEL_TWO_NUM) ) {
-            return array('status' => fasle, 'msg' => 'error_over_max_number');
+            return array('status' => false, 'msg' => 'error_over_max_number');
         }
         $menu = new WeixinMenu();
         $menu->parent_id = $parentId;
@@ -60,10 +62,10 @@ class WeixinMenuModule extends BaseModule {
         if(empty($menu)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
         }
-        $menu->is_del = 1;
+        $menu->is_del = self::DELETED;
         $menu->save();
         if($menu->parent_id == 0) {
-            WeixinMenu::where('parent_id', $id)->update(array('is_del'=> 1));
+            WeixinMenu::where('parent_id', $id)->update(array('is_del'=> self::DELETED));
         }
         return array('status' => true);
     }
@@ -87,6 +89,11 @@ class WeixinMenuModule extends BaseModule {
         $menu = WeixinMenu::find($id);
         if(empty($menu)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
+        }
+        $siblings = WeixinMenu::where('parent_id', $parentId)->where("id", "<>", $id)->where("is_del", self::NOT_DELETED)->count();
+
+        if(($parentId == 0 && $siblings >= self::LEVEL_ONE_NUM) ||($parentId > 0 &&$siblings >= self::LEVEL_TWO_NUM) ) {
+            return array('status' => false, 'msg' => 'error_over_max_number');
         }
         $menu->parent_id = $parentId;
         $menu->name = $name;

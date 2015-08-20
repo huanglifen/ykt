@@ -103,7 +103,6 @@ Common.bindMap = function(pointX, pointY) {
     if(! MapJs) {
         return false;
     }
-
    try{
        map = new BMap.Map("allmap");
        map.enableScrollWheelZoom(true);

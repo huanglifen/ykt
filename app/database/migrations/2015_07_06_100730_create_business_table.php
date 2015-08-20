@@ -16,10 +16,11 @@ class CreateBusinessTable extends Migration {
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->string('number', 50); //商户编码
+            $table->string('integral_number', 50);//积分系统商户编码
+            $table->tinyInteger('level'); //商户级别
             $table->string("account", 100);//商户账号
             $table->string("name", 100);//商户名称
             $table->string("password", 100);//登录密码
-            $table->string('tel', 20)->nullable(); //手机号码
             $table->integer('city_id')->nullable();//所属城市ID
             $table->integer('district_id')->nullable();//所属区域ID
             $table->integer('industry_id')->nullable();//所属行业ID
@@ -31,6 +32,7 @@ class CreateBusinessTable extends Migration {
             $table->string('license', 50)->nullable();//执照号码
             $table->string('contacter', 50)->nullable();//联系人
             $table->string('phone', 20)->nullable();//电话号码
+            $table->string('tel', 20)->nullable(); //手机号码
             $table->string('email', 50)->nullable();//电子邮箱
             $table->string('qq', 12)->nullable();//qq
             $table->string('unique_number', 50)->nullable();//一卡通分配的唯一编码
@@ -43,8 +45,6 @@ class CreateBusinessTable extends Migration {
             $table->string('description', 500); //商户简介
             $table->string('app_description', 500); //手机商户简介
             $table->tinyInteger('status'); //商户状态，1 可用，2：禁用
-            $table->string('integral_number', 50);//积分系统商户编码
-            $table->tinyInteger('level'); //商户级别
             $table->timestamps();
         });
 	}

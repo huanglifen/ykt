@@ -122,7 +122,7 @@
                 if(! confirm("确定要将数据恢复到最近一次备份！")) {
                     return  false;
                 }
-                $("#jsResult").text("数据备份中，请耐心等待！");
+                $("#jsResult").text("数据恢复中，请耐心等待！");
                 $.ajax({
                     'dataType' : 'json',
                     'type' : 'post',

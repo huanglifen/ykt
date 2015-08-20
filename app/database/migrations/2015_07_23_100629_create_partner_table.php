@@ -16,6 +16,7 @@ class CreatePartnerTable extends Migration {
             $table->increments("id");
             $table->string('name', 100);
             $table->string('picture', 100);
+            $table->string('url', 100);
             $table->tinyInteger('sort');
             $table->tinyInteger('display'); //1显示，2不显示
             $table->timestamps();

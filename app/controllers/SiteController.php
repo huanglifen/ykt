@@ -105,7 +105,7 @@ class SiteController extends  BaseController {
         $result = SiteModule::addSite($type, $number, $name, $contact, $address, $areaId, $startTime, $endTime, $tel, $picture, $remark);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("新增网点" . $name, LogModule::TYPE_ADD);
+        LogModule::log("新增网点：" . $name, LogModule::TYPE_ADD);
         return $this->outputContent($result);
     }
 
@@ -171,7 +171,7 @@ class SiteController extends  BaseController {
         $result = SiteModule::updateSite($id, $type, $number, $name, $contact, $address, $areaId, $startTime, $endTime, $tel, $picture, $remark);
         $this->outputErrorIfFail($result);
 
-        LogModule::log("更新网点" . $name, LogModule::TYPE_UPDATE);
+        LogModule::log("更新网点：" . $name, LogModule::TYPE_UPDATE);
         return $this->outputContent($result);
     }
 

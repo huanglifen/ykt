@@ -16,7 +16,7 @@ class CreateDumpTable extends Migration {
         Schema::create($this->tableName, function($table) {
             $table->increments("id");
             $table->string("path", 100); //备份文件路径
-            $table->string("size", 100); //文件大小
+            $table->string("size", 10); //文件大小
             $table->timestamps();
         });
 	}
