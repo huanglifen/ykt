@@ -18,18 +18,20 @@ class SubjectModule extends BaseModule {
      * @param $endTime
      * @param $status
      * @param $remark
-     * @param $field 申请报名时需要填的字段，以逗号","分隔
+     * @param array $field 申请报名时需要填的字段，以逗号","分隔
+     * @param $picture
      * @return array
      */
-    public static function addSubject($title, $content, $startTime, $endTime, $status, $remark, $field) {
+    public static function addSubject($title, $content, $startTime, $endTime, $status, $remark, $field, $picture) {
         $subject = new Subject();
         $subject->title = $title;
         $subject->content = $content;
         $subject->start_time = $startTime;
         $subject->end_time = $endTime;
-        $subject->status = $status;
-        $subject->remark = $remark;
-        $subject->field = $field;
+        $subject->status = $status ? $status : self::STATUS_OPEN;
+        $subject->remark = $remark ? $remark : "";
+        $subject->field = $field ? implode(",",$field) : "";
+        $subject->picture = $picture ? $picture : "";
 
         $subject->save();
         return array('status' => true, 'id' => $subject->id);
@@ -61,9 +63,10 @@ class SubjectModule extends BaseModule {
      * @param $status
      * @param $remark
      * @param $field
+     * @param $picture
      * @return array
      */
-    public static function updateSubject($id, $title, $content, $startTime, $endTime, $status, $remark, $field) {
+    public static function updateSubject($id, $title, $content, $startTime, $endTime, $status, $remark, $field, $picture) {
         $subject = Subject::find($id);
         if(empty($subject)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
@@ -72,9 +75,10 @@ class SubjectModule extends BaseModule {
         $subject->content = $content;
         $subject->start_time = $startTime;
         $subject->end_time = $endTime;
-        $subject->status = $status;
-        $subject->remark = $remark;
-        $subject->field = $field;
+        $subject->status = $status ? $status : self::STATUS_OPEN;
+        $subject->remark = $remark ? $remark : "";
+        $subject->field = $field ? implode(",",$field) : "";
+        $subject->picture = $picture ? $picture : "";
 
         $subject->save();
         return array('status' => true, 'id' => $subject->id);
@@ -104,7 +108,7 @@ class SubjectModule extends BaseModule {
     public static function getSubjects($title, $startTime, $endTime, $status, $offset, $limit) {
         $subject = new Subject();
         if($title) {
-            $subject = $subject->where('title', 'like', "%$title%");
+            $subject = $subject->where('title', "%$title%");
         }
         if($startTime) {
             $subject = $subject->where('start_time', '>=', $startTime);
@@ -118,9 +122,22 @@ class SubjectModule extends BaseModule {
         if($limit) {
             $subject = $subject->offset($offset)->limit($limit);
         }
+        $subject = $subject->selectRaw("id, title, start_time, end_time, status");
+        $subject = $subject->orderBy('id', 'desc');
         return $subject->get();
     }
 
+    /**
+     * 按条件统计活动记录
+     *
+     * @param $title
+     * @param $startTime
+     * @param $endTime
+     * @param $status
+     * @param $offset
+     * @param $limit
+     * @return int
+     */
     public static function countSubjects($title, $startTime, $endTime, $status, $offset, $limit) {
         $subject = new Subject();
         if($title) {

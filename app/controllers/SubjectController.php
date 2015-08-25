@@ -39,6 +39,9 @@ class SubjectController extends BaseController {
 
         $this->outputErrorIfExist();
 
+        $startTime = $startTime ? date("Y-m-d 00:00:00", strtotime($startTime)) : $startTime;
+        $endTime = $endTime ? date("Y-m-d 23:59:59", strtotime($endTime)) : $endTime;
+
         $subjects = SubjectModule::getSubjects($title, $startTime, $endTime, $status, $offset, $limit);
         $total = SubjectModule::countSubjects($title, $startTime, $endTime, $status, $offset, $limit);
         $result = array('subjects' => $subjects, 'iTotalDisplayRecords' => $total, '_iRecordsTotal' => $total, 'iDisplayStart' => $offset, 'iDisplayLength' => $limit);
@@ -72,10 +75,15 @@ class SubjectController extends BaseController {
         $status = $this->getParam('status');
         $remark = $this->getParam('remark');
         $fields = $this->getParam('fields');
+        $picture = $this->getParam('picture');
 
         $this->outputErrorIfExist();
 
-        $result = SubjectModule::addSubject($title, $content, $startTime, $endTime, $status, $remark, $fields);
+        $startTime = $startTime ? date("Y-m-d 00:00:00", strtotime($startTime)) : "";
+        $endTime = $endTime ? date("Y-m-d 23:59:59", strtotime($endTime)) : "";
+        $title = htmlspecialchars($title);
+
+        $result = SubjectModule::addSubject($title, $content, $startTime, $endTime, $status, $remark, $fields, $picture);
         $this->outputErrorIfFail($result);
         return $this->outputContent($result);
     }
@@ -98,7 +106,7 @@ class SubjectController extends BaseController {
             return \Redirect::to('/subject/index');
         }
 
-        $this->data = compact('subject');
+        $this->data = compact('subject', 'id');
         return $this->showView('content.subject-update');
     }
 
@@ -118,10 +126,12 @@ class SubjectController extends BaseController {
         $status = $this->getParam('status');
         $remark = $this->getParam('remark');
         $fields = $this->getParam('fields');
-
+        $picture = $this->getParam('picture');
         $this->outputErrorIfExist();
 
-        $result = SubjectModule::updateSubject($id, $title, $content, $startTime, $endTime, $status, $remark, $fields);
+        $title = htmlspecialchars($title);
+
+        $result = SubjectModule::updateSubject($id, $title, $content, $startTime, $endTime, $status, $remark, $fields, $picture);
         $this->outputErrorIfFail($result);
         return $this->outputContent($result);
     }
@@ -159,8 +169,8 @@ class SubjectController extends BaseController {
         if(empty($subject)) {
             return \Redirect::to('/subject/index');
         }
-        $participators = JoinSubjectModule::getJoinSubjectsBySubjectId($subjectId);
-        $this->data = compact('subject', 'participators');
+        $participators = JoinSubjectModule::getJoinSubjectBySubjectId($subjectId);
+        $this->data = compact('subject', 'participators', 'subjectId');
         return $this->showView('content.subject-participator');
     }
 }

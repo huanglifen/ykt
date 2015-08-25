@@ -360,8 +360,9 @@
                     return false;
                 }
                 source = JSON.stringify(source);
+               var data = {"source" : source};
                 $.ajax({
-                    'data' : 'source='+source,
+                    'data' : data,
                     'dataType' : 'json',
                     'type' : 'post',
                     'url' : baseURL + 'wsource/multi-add',

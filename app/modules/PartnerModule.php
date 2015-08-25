@@ -16,14 +16,16 @@ class PartnerModule extends BaseModule {
      * @param $picture
      * @param $sort
      * @param $display
+     * @param $url
      * @return array
      */
-    public static function addPartner($name, $picture, $sort, $display) {
+    public static function addPartner($name, $picture, $sort, $display, $url) {
         $partner = new Partner();
         $partner->name = $name;
         $partner->picture = $picture;
         $partner->sort = $sort;
         $partner->display = $display;
+        $partner->url = $url;
 
         $partner->save();
         return array('status' => true, 'id' => $partner->id);
@@ -37,9 +39,10 @@ class PartnerModule extends BaseModule {
      * @param $picture
      * @param $sort
      * @param $display
+     * @param $url
      * @return array
      */
-    public static function updatePartner($id, $name, $picture, $sort, $display) {
+    public static function updatePartner($id, $name, $picture, $sort, $display, $url) {
         $partner = Partner::find($id);
         if(empty($partner)) {
             return array('status' => true, 'msg' => 'error_id_not_exist');
@@ -49,6 +52,7 @@ class PartnerModule extends BaseModule {
         $partner->picture = $picture;
         $partner->sort = $sort;
         $partner->display = $display;
+        $partner->url = $url;
 
         $partner->save();
         return array('status' => true);
@@ -81,6 +85,7 @@ class PartnerModule extends BaseModule {
         if($limit) {
             $partner = $partner->offset($offset)->limit($limit);
         }
+        $partner = $partner->orderBy('sort', 'asc');
         return $partner->get();
     }
 

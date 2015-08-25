@@ -71,9 +71,16 @@
                                 </div>
                             </div>
                             <div class="control-group">
+                                <label class="control-label">链接地址</label>
+                                <div class="controls">
+                                    <input type="text" id="url" name="url" value="{{{$partner->url}}}"
+                                           class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
                                 <label class="control-label">显示顺序</label>
                                 <div class="controls">
-                                    <input type="text" id="sort" name="sort" value="50"
+                                    <input type="text" id="sort" name="sort" value="{{{$partner->sort}}}"
                                            class="span6 m-wrap popovers" data-trigger="hover"/>
                                 </div>
                             </div>
@@ -119,6 +126,7 @@
                 data += "&picture=" + $("#jsPicImg").attr('data');
                 data += "&display=" + $("input[name=display]:checked").val();
                 data += "&id=" + <?php echo $id; ?>;
+                data += "&url=" + $("#url").val();
 
                 $(".JsErrorTarget").removeClass('error');
                 $(".JsErrorTip").text('').hide();

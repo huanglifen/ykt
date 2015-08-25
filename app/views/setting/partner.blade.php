@@ -34,9 +34,10 @@
                                 <th style="width:15%">名称</th>
                                 <th style="width:20%">图片</th>
                                 <th style="width:20%">路径</th>
-                                <th style="width:15%">显示顺序</th>
-                                <th style="width:15%">是否显示</th>
-                                <th style="width:15%">操作</th>
+                                <th style="width:15%">链接地址</th>
+                                <th style="width:10%">显示顺序</th>
+                                <th style="width:10%">是否显示</th>
+                                <th style="width:10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -115,17 +116,20 @@
                         return '<div title="' + obj.aData.picture + '">' + obj.aData.picture + '</div>';
                     }
                 }, {
-                    "mData": "sort",
+                    "mData": "url",
                     "aTargets": [3]
                 },{
+                    "mData": "sort",
+                    "aTargets": [4]
+                },{
                     "mData": "display",
-                    "aTargets": [4],
+                    "aTargets": [5],
                     "fnRender" : function(obj) {
                         return displayArr[obj.aData.display];
                     }
                 },{
                     "mData": null,
-                    "aTargets": [5],
+                    "aTargets": [6],
                     "fnRender" : function(obj) {
                         return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'partner/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
                     }

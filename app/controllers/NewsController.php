@@ -90,13 +90,21 @@ class NewsController extends  BaseController {
         $author = $this->getParam('author', 'max:100');
         $startTime = strtotime($this->getParam('startTime'));
         $endTime = strtotime($this->getParam('endTime'));
+        $site = $this->getParam('site');
         $category = ContentModule::CATEGORY_NEWS;
         if($startTime && $endTime && $startTime >= $endTime) {
             $this->errorInfo['endTime'] = \Lang::get($this->langFile . '.error_endTime_cannot_less_than_startTime');
         }
         $this->outputErrorIfExist();
 
-        $result = ContentModule::addContent($title, '', $context, $display, $source, $author, $type, $startTime, $endTime, 0, $category);
+        $siteStr = "";
+        foreach($site as $key => $si) {
+            if($key != 0) {
+                $siteStr .=",";
+            }
+            $siteStr .= "[" . $si ."]";
+        }
+        $result = ContentModule::addContent($title, '', $context, $display, $source, $author, $type, $startTime, $endTime, 0, $category, 0, '', '', $siteStr);
         $this->outputErrorIfFail($result);
 
         LogModule::log("新增新闻：" . $title, LogModule::TYPE_ADD);
@@ -119,6 +127,16 @@ class NewsController extends  BaseController {
         $content = ContentModule::getContentById($id);
         if(empty($content)) {
             return Redirect::to("/news/index");
+        }
+        if($content->site) {
+            $times = preg_match_all('/\d+/', $content->site, $matches);
+            if($times) {
+                $content->site = $matches[0];
+            } else {
+                $content->site = array($content->type);
+            }
+        }else{
+            $content->site = array($content->type);
         }
         $contentType = $this->newsType;
         $this->data = compact('contentType', 'content', 'id');
@@ -143,6 +161,7 @@ class NewsController extends  BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $startTime = strtotime($this->getParam('startTime'));
         $endTime = strtotime($this->getParam('endTime'));
+        $site = $this->getParam('site');
 
         if($startTime && $endTime && $startTime >= $endTime) {
             $this->errorInfo['endTime'] = \Lang::get($this->langFile . '.error_endTime_cannot_less_than_startTime');
@@ -150,8 +169,15 @@ class NewsController extends  BaseController {
 
         $this->outputErrorIfExist();
 
+        $siteStr = "";
+        foreach($site as $key => $si) {
+            if($key != 0) {
+                $siteStr .=",";
+            }
+            $siteStr .= "[" . $si ."]";
+        }
         $category = ContentModule::CATEGORY_NEWS;
-        $result = ContentModule::updateContent($id, $title, '', $context, $display, $source, $author, $type, $startTime, $endTime, $category);
+        $result = ContentModule::updateContent($id, $title, '', $context, $display, $source, $author, $type, $startTime, $endTime, $category, 0, '', '', 0, $siteStr);
         $this->outputErrorIfFail($result);
 
         LogModule::log("修改新闻：" . $title, LogModule::TYPE_UPDATE);

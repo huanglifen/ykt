@@ -181,8 +181,14 @@ class CardController extends  BaseController{
         $sort = $this->getParam('sort', 'required');
 
         $this->outputErrorIfExist();
-
-        $result = CardTypeModule::addCardType($name, $type, $sort);
+        $typeArr = "";
+        foreach($type as $k => $v) {
+            if($k != 0) {
+                $typeArr .=",";
+            }
+            $typeArr .="[$v]";
+        }
+        $result = CardTypeModule::addCardType($name, $typeArr, $sort);
         $this->outputErrorIfFail($result);
         LogModule::log("新增卡类型：$name", LogModule::TYPE_ADD);
         return $this->outputContent($result);
@@ -207,6 +213,16 @@ class CardController extends  BaseController{
             return Redirect::to("card/type");
         }
 
+        if($cardtype->type) {
+            $times = preg_match_all('/\d+/', $cardtype->type, $matches);
+            if($times) {
+                $cardtype->type = $matches[0];
+            } else {
+                $cardtype->type = array();
+            }
+        } else {
+            $cardtype->type = array();
+        }
         $types = CardTypeModule::$type;
         $this->data = compact('cardtype', 'types');
         return $this->showView('card.cardtype-update');
@@ -226,8 +242,15 @@ class CardController extends  BaseController{
         $sort = $this->getParam('sort', 'required');
 
         $this->outputErrorIfExist();
+        $typeArr = "";
+        foreach($type as $k => $v) {
+            if($k != 0) {
+                $typeArr .=",";
+            }
+            $typeArr .="[$v]";
+        }
 
-        $result = CardTypeModule::updateCardType($id, $name, $type, $sort);
+        $result = CardTypeModule::updateCardType($id, $name, $typeArr, $sort);
         $this->outputErrorIfFail($result);
         LogModule::log("修改卡类型：$name", LogModule::TYPE_UPDATE);
         return $this->outputContent($result);

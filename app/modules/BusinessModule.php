@@ -82,6 +82,7 @@ class BusinessModule extends BaseModule {
         if($limit) {
             $business = $business->offset($offset)->limit($limit);
         }
+        $business = $business->orderBy('id', 'desc');
         $business = $business->selectRaw("business.id, business.name, business.number, business.account,business.tel, business.contacter, business.bank_type, business.industry, business.city_id,area.name as cityName");
         $business = $business->get();
         return $business;

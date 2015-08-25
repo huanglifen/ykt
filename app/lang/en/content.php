@@ -19,4 +19,5 @@ return array(
     'error_net_error' => '网络错误',
     'The title field is required.' => '请输入标题',
     'key value not null or valid url' => 'KEY值不能为空或者URL值必须合法',
+    'The title may not be greater than 100 characters.' => '活动标题不能超过100个字符',
 );

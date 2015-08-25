@@ -82,6 +82,13 @@
 
                                 </div>
                             </form>
+                            <div class="row-fluid">
+                                <div class="span6 ">
+                                    <div class="control-group" style="height:200px;border:1px solid #ccc;margin-left:180px;text-align:center;vertical-align: middle">
+                                        <img id="jsPicImg" style="max-height: 190px;margin:5px;" data=""/>
+                                    </div>
+                                </div>
+                            </div>
                             <?php $defaultArr = array('姓名', '手机号', '车牌号'); ?>
                             <div class="control-group">
                                 <label class="control-label">报名需填信息</label>
@@ -93,13 +100,6 @@
                                     @endforeach
                                     <span class="add-field hide">请输入字段名称 <input type="text" class="m-wrap small" /></span>
                                     <button class="btn mini green jsAddField" type="submit">新增</button>
-                                </div>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="span6 ">
-                                    <div class="control-group" style="height:200px;border:1px solid #ccc;margin-left:180px;text-align:center;vertical-align: middle">
-                                        <img id="jsPicImg" style="max-height: 190px;margin:5px;" data=""/>
-                                    </div>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -178,6 +178,7 @@
                 saveSubject();
             });
 
+            //新增需填字段
             $(".jsAddField").on('click', function() {
                 var $sibling = $(this).siblings(".add-field");
                 if($sibling.hasClass("hide")) {
@@ -204,14 +205,29 @@
             var title = $("#title").val();
             var startTime = $("#startTime").val();
             var endTime = $("#endTime").val();
-            var picture = $("#picture").val();
+            var picture = $("#jsPicImg").attr('data');
+            var remark = $("#remark").val();
+            var $status = $("input[name=status]");
+            var status = 1;
+            $.each($status, function(i, item) {
+                var $item = $(item);
+                if($item.attr('checked') == 'checked') {
+                    status = $item.val();
+                }
+            });
             var content = ue.getContent();
             var fields = [];
             var $fields = $("input[name=fields]");;
             $.each($fields, function(i, item) {
-                fields.push($(item).val());
+                var $item = $(item);
+                if( $item.attr('checked') == 'checked') {
+                    fields.push($item.val());
+                }
             });
-            var data = "title="+title+"&startTime="+startTime+"&endTime="+endTime+"&picture="+picture+"&content="+content+"&fields="+fields;
+
+            var data = {"content" : content, "title" : title, "startTime" : startTime, "endTime" : endTime, "picture" : picture, "fields" : fields, "status" : status, "remark" : remark};
+
+            Common.clearError();
             $.ajax({
                 'url' : baseURL + 'subject/add',
                 'dataType' : 'json',
@@ -221,6 +237,13 @@
                     Common.checkLogin(result);
                     if(result.status == <?php echo \App\Controllers\BaseController::RESPONSE_CHECK_FAIL; ?>) {
                         Common.checkError(result);
+                    }else if(result.status == <?php echo \App\Controllers\BaseController::RESPONSE_FAIL; ?>) {
+                        alert(result.msg);
+                    }else if(result.status == <?php echo \App\Controllers\BaseController::RESPONSE_OK; ?>) {
+                        alert('添加成功！');
+                        window.location.reload();
+                    }else {
+                        alert('操作失败！')
                     }
 
                 }

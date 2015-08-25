@@ -9,10 +9,10 @@
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "卡类型管理";
+        $breadTitle = "商户促销类型";
         $breadcrumb = array(
-                array("卡片管理"),
-                array("卡类型管理", $baseURL . '/card/type'));
+                array("商家信息"),
+                array("商户促销类型", $baseURL . '/business-type/index'));
         ?>
         @include('common.bread')
         <!-- BEGIN PAGE CONTENT-->
@@ -23,16 +23,17 @@
                     <div class="portlet-body">
                         <div class="clearfix">
                             <div class="btn-group">
-                                <a href="{{{$baseURL}}}/card/type-add" class="btn margin-right-10 green">
+                                <a href="{{{$baseURL}}}/business-type/add" class="btn margin-right-10 green">
                                     新增<i class="icon-plus"></i>
                                 </a>
                             </div>
                         </div>
-                        <table class="table table-striped table-bordered table-hover" id="datatable_cards">
+                        <table class="table table-striped table-bordered table-hover" id="datatable_type">
                             <thead>
                             <tr>
                                 <th style="width:25%">名称</th>
-                                <th style="width:25%">类型</th>
+                                <th style="width:25%">是否显示</th>
+                                <th style="width:25%">排序</th>
                                 <th style="width:25%">操作</th>
                             </tr>
                             </thead>
@@ -57,10 +58,9 @@
     <script src="{{{$mediaURL}}}js/table-managed.js" type="text/javascript"></script>
     <script>
         $(function () {
-            var typeArr = <?php echo json_encode(\App\Module\CardTypeModule::$type); ?>;
-
+            var displayArr = {"1":"是", "2" : "否"};
             App.init();
-            var tbl = $('#datatable_cards').dataTable({
+            var tbl = $('#datatable_type').dataTable({
                 "sScrollXInner": "100%",
                 "bServerSide": true,
                 "bDestroy": false,
@@ -95,33 +95,25 @@
                 "fnDrawCallback": function () {
                     App.initUniform();
                 },
-                "sAjaxDataProp": 'types',
-                "sAjaxSource": baseURL + 'card/card-type',
+                "sAjaxDataProp": 'businessTypes',
+                "sAjaxSource": baseURL + 'business-type/business-types',
                 "aoColumns": [{
                     "mData": "name",
                     "aTargets": [0]
                 }, {
-                    "mData": "type",
+                    "mData": "status",
                     "aTargets": [1],
                     "fnRender" : function(obj) {
-                        var type = obj.aData.type;
-                        var types = "";
-                        if(type) {
-                            type = type.match(/\d+/g);
-                            for(var i in type ) {
-                                if(i != 0) {
-                                    types += "，";
-                                }
-                                types +=typeArr[type[i]];
-                            }
-                        }
-                        return types;
+                        return displayArr[obj.aData.status];
                     }
                 }, {
+                    "mData": "sort",
+                    "aTargets": [2]
+                }, {
                     "mData": null,
-                    "aTargets": [2],
+                    "aTargets": [3],
                     "fnRender" : function(obj) {
-                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'card/type-update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
+                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'business-type/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
                     }
                 }]
             });
@@ -134,7 +126,7 @@
                     'type' : 'post',
                     'dataType' : 'json',
                     'data' : 'id='+id,
-                    'url' : baseURL + 'card/type-delete',
+                    'url' : baseURL + 'business-type/index',
                     'success' : function(json) {
                         Common.checkLogin(json);
                         if(json.status == 0) {

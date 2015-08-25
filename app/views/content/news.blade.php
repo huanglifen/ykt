@@ -68,9 +68,10 @@
                         <table class="table table-striped table-bordered table-hover" id="datatable_content">
                             <thead>
                             <tr>
-                                <th style="width:30%">标题</th>
-                                <th style="width:25%">公告类型</th>
-                                <th style="width:20%">是否显示</th>
+                                <th style="width:25%">标题</th>
+                                <th style="width:20%">公告类型</th>
+                                <th style="width:15%">是否显示</th>
+                                <th style="width:20%">显示位置</th>
                                 <th >操作</th>
                             </tr>
                             </thead>
@@ -158,7 +159,7 @@
                         return newsType[obj.aData.type];
                     }
                 },{
-                    "mData": "display",
+                    "mData": null,
                     "aTargets": [2],
                     "fnRender" : function(obj) {
                         return displayArr[obj.aData.display];
@@ -166,6 +167,26 @@
                 },{
                     "mData": null,
                     "aTargets": [3],
+                    "fnRender" : function(obj) {
+                       var site = obj.aData.site;
+                        if(site) {
+                            site = site.match(/\d+/g);
+                            var length = site.length;
+                            var siteStr = "";
+                            for(var i = 0; i < site.length; i++ ) {
+                                if(i != 0) {
+                                    siteStr +="，";
+                                }
+                                siteStr +=newsType[site[i]];
+                            }
+                            return siteStr;
+                        }else{
+                            return newsType[obj.aData.type];
+                        }
+                    }
+                },{
+                    "mData": null,
+                    "aTargets": [4],
                     "fnRender" : function(obj) {
                         return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'news/update/' + obj.aData.id  + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
                     }

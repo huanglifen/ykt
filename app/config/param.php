@@ -28,4 +28,7 @@ return array(
     'baidu' => array(
         'map_ak'          => 'rGNbe9ttCWhnGExQHUsDWHRi',
     ),
+    'kuaidi100' => array(
+        'url' => 'http://www.kuaidi100.com/chaxun',
+    ),
 );

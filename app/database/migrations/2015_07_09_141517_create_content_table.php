@@ -33,6 +33,7 @@ class CreateContentTable extends Migration {
             $table->integer('start_time');
             $table->integer('end_time');
             $table->tinyInteger('category'); //大类型， 1为帮助 2为新闻
+            $table->string("site", 50); //显示位置
             $table->timestamps();
         });
 	}

@@ -65,6 +65,17 @@
                                 </div>
                             </div>
                             <div class="control-group">
+                                <label class="control-label">显示位置</label>
+                                <div class="controls">
+                                    @foreach($contentType as $key => $nType)
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="site[]" value="{{{$key}}}" @if(in_array($key, $content->site)) checked @endif />
+                                            {{{$nType}}}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="control-group">
                                 <label class="control-label">开始时间</label>
                                 <div class="controls input-prepend" style="margin-left:20px;">
                                     <span class="add-on"><i class="icon-remove"></i></span>

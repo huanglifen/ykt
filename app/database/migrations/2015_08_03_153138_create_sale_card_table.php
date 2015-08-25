@@ -27,6 +27,8 @@ class CreateSaleCardTable extends Migration {
             $table->string("address", 100); //邮寄地址
             $table->tinyInteger("status"); //交易状态
             $table->tinyInteger("post_status"); //邮寄状态
+            $table->tinyInteger("deliver"); //快递类型
+            $table->string("post_order", 30); //快递单号
             $table->timestamps();
         });
 	}

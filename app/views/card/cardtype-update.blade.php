@@ -26,13 +26,14 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">类别</label>
+                                    <label class="control-label">操作类别</label>
                                     <div class="controls">
-                                        <select class="span6 chosen" tabindex="1" id="type" name="type">
-                                            @foreach($types as $key => $type)
-                                                <option value="{{{$key}}}" @if($key == $cardtype->type)selected @endif>{{{$type}}}</option>
-                                            @endforeach
-                                        </select>
+                                        @foreach($types as $key => $type)
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="type[]" value="{{{$key}}}" @if(in_array($key, $cardtype->type)) checked @endif/>
+                                                {{{$type}}}
+                                            </label>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="control-group">

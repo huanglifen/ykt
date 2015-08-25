@@ -64,12 +64,13 @@ class PartnerController extends BaseController {
 
         $name = $this->getParam('name', 'required');
         $picture = $this->getParam('picture');
-        $sort = $this->getParam('sort', 'numeric|max:99|min:0');
+        $sort = $this->getParam('sort', 'numeric|max:99|min:1');
         $display = $this->getParam('display');
+        $url = $this->getParam('url');
 
         $this->outputErrorIfExist();
 
-        $result = PartnerModule::addPartner($name, $picture, $sort, $display);
+        $result = PartnerModule::addPartner($name, $picture, $sort, $display, $url);
         $this->outputErrorIfFail($result);
 
         LogModule::log("新增合作伙伴：" . $name, LogModule::TYPE_ADD);
@@ -108,12 +109,13 @@ class PartnerController extends BaseController {
         $id = $this->getParam('id', 'required|numeric');
         $name = $this->getParam('name', 'required');
         $picture = $this->getParam('picture');
-        $sort = $this->getParam('sort', 'between:0,99');
+        $sort = $this->getParam('sort', 'numeric|max:99|min:1');
         $display = $this->getParam('display');
+        $url = $this->getParam('url');
 
         $this->outputErrorIfExist();
 
-        $result = PartnerModule::updatePartner($id, $name, $picture, $sort, $display);
+        $result = PartnerModule::updatePartner($id, $name, $picture, $sort, $display, $url);
         $this->outputErrorIfFail($result);
 
         LogModule::log("更新合作伙伴：" . $name, LogModule::TYPE_UPDATE);

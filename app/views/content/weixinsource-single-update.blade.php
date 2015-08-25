@@ -177,13 +177,15 @@
             }
 
             $("#JsSaveBtn").on('click', function () {
-                var data = "title=" + $("#title").val();
-                data += "&type=" + <?php echo $type; ?>;
-                data += "&cover=" + $("#jsPicImg").attr('data');
-                data += "&brief=" + $("#brief").val();
-                data += "&url=" + $("#url").val();
-                data += "&editor=" + ue.getContent();
-                data += "&id=" + <?php echo $id ?>;
+                var title = $("#title").val();
+                var type =  <?php echo $type; ?>;
+                var cover =  $("#jsPicImg").attr('data');
+                var brief =  $("#brief").val();
+                var url = $("#url").val();
+                var editor = ue.getContent();
+                var id = <?php echo $id ?>;
+                var data = {"id": id, "title" : title, "type" : type, "cover" : cover, "brief" : brief, "url" : url, "editor" : editor};
+
                 $(".JsErrorTarget").removeClass('error');
                 $(".JsErrorTip").text('').hide();
                 $.ajax({

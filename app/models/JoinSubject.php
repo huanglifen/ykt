@@ -6,5 +6,5 @@
  * @package App\Model
  */
 class JoinSubject extends \Eloquent {
-    protected  $tableName = 'join_subject';
+    protected  $table = 'join_subject';
 }

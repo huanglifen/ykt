@@ -15,7 +15,7 @@ class JoinSubjectModule extends BaseModule {
      * @param $subjectId
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getJoinSubjectsBySubjectId($subjectId) {
+    public static function getJoinSubjectBySubjectId($subjectId) {
         return JoinSubject::where('subject_id', $subjectId)->get();
     }
 }

@@ -32,14 +32,15 @@ class ContentModule extends BaseModule {
      * @param int $parentId  微信素材多条图文父图文id
      * @param string $url   微信素材链接地址
      * @param string $picture 微信素材封面图
+     * @param string site 显示位置
      * @return array
      */
-    public static function addContent($title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime,$sort, $category, $parentId = 0, $url = '', $picture = '') {
+    public static function addContent($title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime,$sort, $category, $parentId = 0, $url = '', $picture = '', $site = '') {
         $content = new Content();
-        $content->title = $title;
-        $content->brief = $brief;
+        $content->title = $title ? $title : "";
+        $content->brief = $brief ? $brief : "";
         $content->content = $context;
-        $content->display = $display;
+        $content->display = $display ? $display : self::STATUS_OPEN;
         $content->source = $source;
         $content->author = $author;
         $content->type = $type;
@@ -50,6 +51,7 @@ class ContentModule extends BaseModule {
         $content->parent_id = $parentId;
         $content->url = $url;
         $content->cover = $picture;
+        $content->site = $site;
         $content->save();
         return array('status' => true, 'id' => $content->id);
     }
@@ -121,17 +123,18 @@ class ContentModule extends BaseModule {
      * @param string $url   微信素材链接地址
      * @param string $picture 微信素材封面图
      * @param int $sort
+     * @param string $site
      * @return array
      */
-    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category, $parentId = 0, $url = '', $picture = '', $sort = 0) {
+    public static function updateContent($id, $title, $brief, $context, $display, $source, $author, $type, $startTime, $endTime, $category, $parentId = 0, $url = '', $picture = '', $sort = 0, $site = '') {
         $content = Content::find($id);
         if(empty($content)) {
             return array('status' => false, 'msg' => 'error_id_not_exist');
         }
-        $content->title = $title;
-        $content->brief = $brief;
-        $content->content = $context;
-        $content->display = $display;
+        $content->title = $title ? $title : "";
+        $content->brief = $brief ? $brief : "";
+        $content->content = $context ? $context : "";
+        $content->display = $display ? $display : self::STATUS_OPEN;
         $content->source = $source;
         $content->author = $author;
         $content->type = $type;
@@ -142,6 +145,7 @@ class ContentModule extends BaseModule {
         $content->url = $url;
         $content->cover = $picture;
         $content->sort = $sort;
+        $content->site = $site;
         $content->save();
 
         return array('status' => true, 'id' => $content->id);
@@ -185,8 +189,9 @@ class ContentModule extends BaseModule {
             $content = $content->offset($offset)->limit($limit);
         }
         if($category == self::CATEGORY_HELP) {
-            $content = $content->selectRaw("content.*, content_type.name as typename");
+            $content = $content->selectRaw("content.id, content.parent_id, content.title, content.url, content.display, content.sort, content.type, content_type.name as typename");
         }
+        $content = $content->orderBy('id', 'desc');
         return $content->get();
     }
 

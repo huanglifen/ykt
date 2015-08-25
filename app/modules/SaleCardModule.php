@@ -16,6 +16,8 @@ class SaleCardModule extends BaseModule {
     const POST_STATUS_NON_DELIVERY = 1; //未发货
     const POST_STATUS_DELIVERY = 2; //已发货，邮寄中
     const POST_STATUS_RECEIVED = 3; //已收件
+    const POST_STATUS_RECALL = 4; //已退货
+    const POST_STATUS_RECALLING = 5; //退货中
 
 
 
@@ -121,6 +123,40 @@ class SaleCardModule extends BaseModule {
             $saleCards = $saleCards->where("pay_mount", '<=', $maxMount);
         }
         return $saleCards->count();
+    }
+
+    /**
+     * 更新邮寄状态
+     *
+     * @param $id
+     * @param $postStatus
+     * @return array
+     */
+    public static function updatePostStatus($id, $postStatus, $postOrder, $address, $delivery) {
+        $saleCard = SaleCard::find($id);
+        if(empty($saleCard)) {
+            return array('status' => false, 'msg' => 'error_id_not_exist');
+        }
+        $saleCard->post_status = $postStatus;
+        $saleCard->post_order = $postOrder;
+        $saleCard->address = $address;
+        $saleCard->delivery = $delivery;
+        $saleCard->update();
+        return array('status' => true);
+    }
+
+    /**
+     * 获取邮寄信息
+     *
+     * @param $id
+     * @return array
+     */
+    public static function getDelivery($id) {
+        $saleCard = SaleCard::where('id', $id)->selectRaw("id, delivery, post_order, post_status, address")->first();
+        if(empty($saleCard)) {
+            return array('status' => false, 'msg' => 'error_id_not_exist');
+        }
+        return array('status' => true, 'result' => $saleCard);
     }
 
     /**

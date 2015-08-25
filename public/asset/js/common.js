@@ -63,6 +63,11 @@ Common.checkLogin = function(d) {
     }
 }
 
+Common.clearError = function() {
+    $(".JsErrorTarget").removeClass('error');
+    $(".JsErrorTip").text('').hide();
+}
+
 Common.bindCitySelect = function(flag, loadMap ) {
     if(typeof loadMap == 'undefined') {
         loadMap = true;

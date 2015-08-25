@@ -1,17 +1,14 @@
 @extends("common.right")
-@section('otherCss')
-    <link rel="stylesheet" type="text/css" href="{{{$mediaURL}}}css/chosen.css" />
-@stop
 @section("context")
     <!-- BEGIN PAGE -->
     <!-- BEGIN PAGE CONTAINER-->
     <div class="container-fluid">
         <?php
-        $breadTitle = "卡类型管理";
+        $breadTitle = "新增促销类型";
         $breadcrumb = array(
-                array("卡片管理"),
-                array("卡类型管理", $baseURL . '/card/type'),
-                array("新增类型", $baseURL . '/card/type-add'),
+                array("商家管理"),
+                array("商户促销类型", $baseURL . '/business-type/index'),
+                array("新增类型", $baseURL . '/business-type/add'),
         )
         ?>
         @include('common.bread')
@@ -30,21 +27,23 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">操作类别</label>
-                                <div class="controls">
-                                    @foreach($types as $key => $type)
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="type[]" value="{{{$key}}}"/>
-                                            {{{$type}}}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="control-group">
                                 <label class="control-label">排序</label>
                                 <div class="controls">
                                     <input type="text" id="sort" name="sort" value="50"
                                            class="span6 m-wrap popovers" data-trigger="hover"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">是否显示</label>
+                                <div class="controls">
+                                    <label class="radio">
+                                        <input type="radio" name="status" value="{{{\App\Module\BaseModule::STATUS_OPEN}}}" checked />
+                                        是
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="status" value="{{{\App\Module\BaseModule::STATUS_CLOSE}}}" />
+                                        否
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-actions">
@@ -63,7 +62,6 @@
     <!-- END PAGE -->
 @stop
 @section('otherJs')
-    <script type="text/javascript" src="{{{$mediaURL}}}js/chosen.jquery.min.js"></script>
     <script src="{{{$jsURL}}}app.js" type="text/javascript"></script>
     <script src="{{{$mediaURL}}}js/jquery.validate.min.js" type="text/javascript"></script>
     <script>
@@ -77,7 +75,7 @@
                 },
                 submitHandler: function (form) {
                     $.ajax({
-                        url: baseURL + "card/type-add",
+                        url: baseURL + "business-type/add",
                         dataType: 'json',
                         type: "POST",
                         data: target.serialize(),
@@ -101,7 +99,7 @@
                     },
                     sort : {
                         required : true,
-                        range : [0, 99]
+                        range : [1, 99]
                     }
 
                 },
@@ -112,7 +110,7 @@
                     },
                     sort : {
                         required : "请输入排序值",
-                        range : '请输入0~99之间的数字'
+                        range : '请输入1~99之间的数字'
                     }
                 }
             });

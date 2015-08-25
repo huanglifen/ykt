@@ -37,7 +37,7 @@
                                             <select class="span7 chosen" tabindex="1" id="status" name="status">
                                                 <option value="0">全部</option>
                                                 <option value="{{{\App\Module\BaseModule::STATUS_OPEN}}}">发布</option>
-                                                <optino value="{{{\App\Module\BaseModule::STATUS_CLOSE}}}">禁用</optino>
+                                                <option value="{{{\App\Module\BaseModule::STATUS_CLOSE}}}">禁用</option>
                                             </select>
                                         </div>
                                 </div>
@@ -170,13 +170,13 @@
                     "mData": null,
                     "aTargets": [5],
                     "fnRender" : function(obj) {
-                        return '<a href="' + baseURL + 'subject/Participator/'+ obj.aData.id + '">报名信息</a>';
+                        return '<a href="' + baseURL + 'subject/participator/'+ obj.aData.id + '">报名信息</a>';
                     }
                 },{
                     "mData": null,
                     "aTargets": [6],
                     "fnRender" : function(obj) {
-                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'help/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
+                        return '<span data-id="' + obj.aData.id + '"><a title="编辑" href="' + baseURL + 'subject/update/' + obj.aData.id + '" class="btn mini green margin-right-10"><i class="icon-edit"></i></a><a title="删除" href="javascript:;" class="JsDelete btn mini red"><i class="icon-trash"></i></a></span>';
                     }
                 }]
             });

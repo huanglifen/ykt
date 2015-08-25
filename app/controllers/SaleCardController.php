@@ -1,5 +1,7 @@
 <?php namespace App\Controllers;
 
+use App\Model\SaleCard;
+use App\Module\LogModule;
 use App\Module\SaleCardModule;
 
 /**
@@ -8,6 +10,7 @@ use App\Module\SaleCardModule;
  * @package App\Controllers
  */
 class SaleCardController extends BaseController {
+    protected $langFile = 'recharge';
 
     public $dateArr = array(
         0 => '全部',
@@ -38,7 +41,23 @@ class SaleCardController extends BaseController {
         0 => '全部',
         SaleCardModule::POST_STATUS_NON_DELIVERY => '处理中',
         SaleCardModule::POST_STATUS_DELIVERY => '已发货',
-        SaleCardModule::POST_STATUS_RECEIVED => '已收件'
+        SaleCardModule::POST_STATUS_RECEIVED => '已收件',
+        SaleCardModule::POST_STATUS_RECALL => '已退货',
+        SaleCardModule::POST_STATUS_RECALLING => '退货中'
+    );
+
+    public $deliveryArr = array(
+        0 => '暂无',
+        'shunfeng' => '顺丰快递',
+        'ems' => 'ems快递',
+        'debangwuliu' => '德邦物流',
+        'yuantong' => '圆通快递',
+        'yunda' => '韵达快递',
+        'tiantian' => '天天快递',
+        'shentong' => '申通',
+        'youzhengguonei' => '邮政包裹挂号信',
+        'youzhengguoji' => '邮政国际包裹挂号信',
+        'zhongtong' => '中通速递',
     );
 
     /**
@@ -54,7 +73,8 @@ class SaleCardController extends BaseController {
         $date = $this->dateArr;
         $status = $this->statusArr;
         $postStatus = $this->postStatusArr;
-        $this->data = compact('keyword', 'date', 'status', 'postStatus');
+        $deliveries = $this->deliveryArr;
+        $this->data = compact('keyword', 'date', 'status', 'postStatus', 'deliveries');
         return $this->showView("recharge.sale-card");
     }
 
@@ -120,5 +140,41 @@ class SaleCardController extends BaseController {
 
         $result = array('salecards' => $saleCards, 'iTotalDisplayRecords' => $total, '_iRecordsTotal' => $total, 'iDisplayStart' => $offset, 'iDisplayLength' => $limit);
         return json_encode($result);
+    }
+
+    /**
+     * 查看邮寄详情
+     */
+    public function getDelivery() {
+        $this->outputUserNotLogin();
+
+        $id = $this->getParam('id', 'required|numeric');
+        $this->outputErrorIfExist();
+
+        $result = SaleCardModule::getDelivery($id);
+        $this->outputErrorIfFail($result);
+        return $this->outputContent($result);
+    }
+
+    /**
+     * 修改邮寄信息
+     */
+    public function postDelivery() {
+        $this->outputUserNotLogin();
+
+        $id = $this->getParam('id', 'required|numeric');
+        $postStatus = $this->getParam('postStatus', 'required');
+        $postOrder = $this->getParam('postOrder', "max:30");
+        $address = $this->getParam('postAddress', "max:100");
+        $delivery = $this->getParam('delivery');
+
+        $this->outputErrorIfExist();
+
+        $result = SaleCardModule::updatePostStatus($id, $postStatus, $postOrder, $address, $delivery);
+        $this->outputErrorIfFail($result);
+
+        $content = "修改$id 的邮寄状态为".$this->postStatusArr[$postStatus];
+        LogModule::log($content, LogModule::TYPE_UPDATE);
+        return $this->outputContent();
     }
 }
